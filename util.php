@@ -6,7 +6,7 @@ $healthcheckurl = "/v2/healthcheck?timestamp=" . $date;
 $nearmeurl = "/v2/nearme/latitude/-37.82392124423254/longitude/144.9462017431463";
 $stopsurl = "/v2/mode/2/line/787/stops-for-line";
 
-function generateSignature($url)
+function generateURLWithDevIDAndKey($url)
 {
     global $config;
     

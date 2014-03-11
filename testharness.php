@@ -10,7 +10,7 @@ $stopsurl = "/v2/mode/2/line/787/stops-for-line";
 <pre>
 <? 
 
-$finalurl = generateSignature($healthcheckurl);
+$finalurl = generateURLWithDevIDAndKey($healthcheckurl);
 
 # Connect to the Web API using cURL.
 $ch = curl_init();
