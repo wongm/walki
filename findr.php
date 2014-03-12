@@ -26,29 +26,42 @@ $url = "http://maps.googleapis.com/maps/api/staticmap?size=600x600&maptype=roadm
 $poiTickets = 100;
 $poiTrams = 1;
 
-$markerOrigin = "&markers=color:blue%7Clabel:O%7C$originLat,$originLong";
+$markerOrigin = "&markers=color:blue%7Clabel:H%7C$originLat,$originLong";
 
 // nearest tram
-//$locationNearestTram = getNearestPOI($poiTrams, $originLat, $originLong, $boundsOrigin);
+$locationNearestTram = getNearestPOI($poiTrams, $originLat, $originLong, $boundsOrigin);
 $markerNearestTram = "&markers=color:green%7Clabel:T%7C$locationNearestTram->lat,$locationNearestTram->lon";
+$pathNearestTram = "&path=color:green|weight:5|$originLat,$originLong|$locationNearestTram->lat,$locationNearestTram->lon";
 
 // how far do I need to walk to the ticket machine from home?
 $locationTicketMachine = getNearestPOI($poiTickets, $originLat, $originLong, $boundsOrigin);
 $markerTicketMachine = "&markers=color:red%7Clabel:M%7C$locationTicketMachine->lat,$locationTicketMachine->lon";
+$pathTicketMachine = "&path=color:red|weight:5|$originLat,$originLong|$locationTicketMachine->lat,$locationTicketMachine->lon";
 
 // where is the nearest tram stop after the ticket machine?
 $boundsTicketMachine = getOffsetLocationBounds($locationTicketMachine->lat, $locationTicketMachine->lon, 500);
 $locationTramWithTicket = getNearestPOI($poiTrams, $locationTicketMachine->lat, $locationTicketMachine->lon, $boundsTicketMachine);
-$markerTramWithTicket = "&markers=color:orange%7Clabel:T%7C$locationTramWithTicket->lat,$locationTramWithTicket->lon";
+$markerTramWithTicket = "&markers=color:red%7Clabel:T%7C$locationTramWithTicket->lat,$locationTramWithTicket->lon";
+$pathTramWithTicket = "&path=color:red|weight:5|$locationTicketMachine->lat,$locationTicketMachine->lon|$locationTramWithTicket->lat,$locationTramWithTicket->lon";
+
+$extraMykiDistance = (($locationTicketMachine->distance + $locationTramWithTicket->distance) - $locationNearestTram->distance);
 
 // display them
-$url = "http://maps.googleapis.com/maps/api/staticmap?size=600x600&maptype=roadmap&sensor=false$markerNearestTram$markerTicketMachine$markerTramWithTicket$markerOrigin";
+$url = "http://maps.googleapis.com/maps/api/staticmap?size=600x600&maptype=roadmap&sensor=false$markerNearestTram$markerTicketMachine$markerTramWithTicket$markerOrigin$pathNearestTram$pathTicketMachine$pathTramWithTicket";
 ?>
 <h1>How far to buy a tram ticket?</h1>
 
+<p>You're currently at <?php echo $originLat ?>, <?php echo $originLong ?>.</p>
+
 <h2>Nearest tram stop</h2>
-<p>It's a <?php echo 1?></p>
-<p></p>
+<p>It's a <?php echo $locationNearestTram->distance ?> meter walk to it: <?php echo $locationNearestTram->location_name ?>.</p>
+
+
+<h2>Forgot your ticket</h2>
+<p>It's a <?php echo $locationTicketMachine->distance ?> metre walk to the nearest myki machine: <?php echo $locationTicketMachine->business_name ?> at <?php echo $locationTicketMachine->location_name ?>, <?php echo $locationTicketMachine->suburb ?>.</p>
+<p>You then need to walk <?php echo $locationTramWithTicket->distance ?> metres back to the tram stop: <?php echo $locationNearestTram->location_name ?>.</p>
+
+<p>All you, you've had to walk an extra <?php echo $extraMykiDistance ?> metres because you can't buy a ticket on a tram!</p>
 
 
 <img src="<?php echo $url ?>" />
