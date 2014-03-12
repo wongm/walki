@@ -1,6 +1,7 @@
 <?php
 include_once('util.php');
 
+$metresMaxWalkingDistance = 1500;
 
 $originLat = $_GET['lat'];
 $originLong = $_GET['long'];
@@ -15,7 +16,7 @@ if (strlen($originLong) < 1)
 }
 
 // get the bounds
-$boundsOrigin = getOffsetLocationBounds($originLat, $originLong, 1000);
+$boundsOrigin = getOffsetLocationBounds($originLat, $originLong, $metresMaxWalkingDistance);
 
 // display bounds
 $url = "http://maps.googleapis.com/maps/api/staticmap?size=600x600&maptype=roadmap&markers=color:blue%7Clabel:T%7C$bounds->lat1,$bounds->long1&markers=color:green%7Clabel:G%7C$lat,$long&markers=color:red%7Clabel:B%7C$bounds->lat2,$bounds->long2&sensor=false";
@@ -47,7 +48,7 @@ if ($locationNearestTram != null)
 	$pathTicketMachine = "&path=color:red|weight:5|$originLat,$originLong|$locationTicketMachine->lat,$locationTicketMachine->lon";
 	
 	// where is the nearest tram stop after the ticket machine?
-	$boundsTicketMachine = getOffsetLocationBounds($locationTicketMachine->lat, $locationTicketMachine->lon, 1000);
+	$boundsTicketMachine = getOffsetLocationBounds($locationTicketMachine->lat, $locationTicketMachine->lon, $metresMaxWalkingDistance);
 	$locationTramWithTicket = getNearestPOI($poiTrams, $locationTicketMachine->lat, $locationTicketMachine->lon, $boundsTicketMachine);
 	$markerTramWithTicket = "&markers=color:red%7Clabel:T%7C$locationTramWithTicket->lat,$locationTramWithTicket->lon";
 	$pathTramWithTicket = "&path=color:red|weight:5|$locationTicketMachine->lat,$locationTicketMachine->lon|$locationTramWithTicket->lat,$locationTramWithTicket->lon";
