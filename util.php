@@ -89,6 +89,7 @@ function getNearestPOI($poiType, $originLat, $originLong, $bounds)
 	$shortestDistance = 99999999;
 	$nearestLocation = null;
 	
+	
 	foreach($json->locations as $location)
 	{
 		$thisDistance = calculateDistance($originLat, $originLong, $location->lat, $location->lon, 'k');
