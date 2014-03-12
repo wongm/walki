@@ -60,7 +60,7 @@ if ($locationNearestTram != null)
 
 <h2>Forgot your ticket</h2>
 <p>It's a <?php echo $locationTicketMachine->distance ?> metre walk to the nearest myki machine: <?php echo $locationTicketMachine->business_name ?> at <?php echo $locationTicketMachine->location_name ?>, <?php echo $locationTicketMachine->suburb ?>.</p>
-<p>You then need to walk <?php echo $locationTramWithTicket->distance ?> metres back to the tram stop: <?php echo $locationNearestTram->location_name ?>.</p>
+<p>You then need to walk <?php echo $locationTramWithTicket->distance ?> metres back to the tram stop: <?php echo $locationTramWithTicket->location_name ?>.</p>
 
 <p>All you, you've had to walk an extra <?php echo $extraMykiDistance ?> metres because you can't buy a ticket on a tram!</p>
 <?php
