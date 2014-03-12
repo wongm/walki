@@ -56,12 +56,12 @@ if ($locationNearestTram != null)
 	$extraMykiDistance = (($locationTicketMachine->distance + $locationTramWithTicket->distance) - $locationNearestTram->distance);
 ?>
 <h2>Nearest tram stop</h2>
-<p>It's a <?php echo $locationNearestTram->distance ?> meter walk to it: <?php echo trim($locationNearestTram->location_name) ?>.</p>
+<p>It's a <?php echo $locationNearestTram->distance ?> metre walk to the nearest tram stop: <?php echo trim($locationNearestTram->location_name) ?>.</p>
 
 
-<h2>Forgot your ticket</h2>
+<h2>Forgotten your ticket?</h2>
 <p>It's a <?php echo $locationTicketMachine->distance ?> metre walk to the nearest myki machine: <?php echo $locationTicketMachine->business_name ?> at <?php echo trim($locationTicketMachine->location_name) ?>, <?php echo $locationTicketMachine->suburb ?>.</p>
-<p>You then need to walk <?php echo $locationTramWithTicket->distance ?> metres back to the tram stop: <?php echo trim($locationTramWithTicket->location_name) ?>.</p>
+<p>You then need to walk <?php echo $locationTramWithTicket->distance ?> metres to the nearest tram stop: <?php echo trim($locationTramWithTicket->location_name) ?>.</p>
 
 <p>All you, you've had to walk an extra <?php echo $extraMykiDistance ?> metres because you can't buy a ticket on a tram!</p>
 <?php
