@@ -2,36 +2,6 @@
 
 include_once('util.php');
 
-global $config;
-
-?>
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-    <style type="text/css">
-      html { height: 100% }
-      body { height: 100%; margin: 0; padding: 0 }
-      #map-canvas { height: 100% }
-    </style>
-    <script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=<?php echo $config['googleapi'] ?>&sensor=false">
-    </script>
-    <script type="text/javascript">
-      function initialize() {
-        var mapOptions = {
-          center: new google.maps.LatLng(-34.397, 150.644),
-          zoom: 8
-        };
-        var map = new google.maps.Map(document.getElementById("map-canvas"),
-            mapOptions);
-      }
-      google.maps.event.addDomListener(window, 'load', initialize);
-    </script>
-  </head>
-  <body>
-<?php
-
 $metresMaxWalkingDistance = 1500;
 
 $originLat = $_GET['lat'];
@@ -56,12 +26,7 @@ $markerOrigin = "&markers=color:blue%7Clabel:H%7C$originLat,$originLong";
 
 // nearest tram
 $locationNearestTram = getNearestPOI($poiTrams, $originLat, $originLong, $boundsOrigin);
-?>
-<h1>How far to buy a tram ticket?</h1>
 
-<p>You're currently at <?php echo $originLat ?>, <?php echo $originLong ?>.</p>
-
-<?php
 if ($locationNearestTram != null)
 {
 	$markerNearestTram = "&markers=color:green%7Clabel:T%7C$locationNearestTram->lat,$locationNearestTram->lon";
@@ -79,6 +44,46 @@ if ($locationNearestTram != null)
 	$pathTramWithTicket = "&path=color:red|weight:5|$locationTicketMachine->lat,$locationTicketMachine->lon|$locationTramWithTicket->lat,$locationTramWithTicket->lon";
 	
 	$extraMykiDistance = (($locationTicketMachine->distance + $locationTramWithTicket->distance) - $locationNearestTram->distance);
+}
+
+global $config;
+
+?>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map-canvas { height: 100% }
+    </style>
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=<?php echo $config['googleapi'] ?>&sensor=false">
+    </script>
+    <script type="text/javascript">
+      function initialize() {
+        var mapOptions = {
+          center: new google.maps.LatLng(<?php echo $originLat; ?>, <?php echo $originLong; ?>),
+          zoom: 16
+        };
+        var map = new google.maps.Map(document.getElementById("map-canvas"),
+            mapOptions);
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+  </head>
+  <body>
+<?php
+
+?>
+<h1>How far to buy a tram ticket?</h1>
+
+<p>You're currently at <?php echo $originLat ?>, <?php echo $originLong ?>.</p>
+
+<?php
+if ($locationNearestTram != null)
+{
 ?>
 <h2>Nearest tram stop</h2>
 <p>It's a <?php echo $locationNearestTram->distance ?> metre walk to the nearest tram stop: <?php echo trim($locationNearestTram->location_name) ?>.</p>
