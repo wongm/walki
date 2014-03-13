@@ -69,14 +69,15 @@ global $config;
 	var directionsService = new google.maps.DirectionsService();
     var originLatlng = new google.maps.LatLng(<?php echo $originLat; ?>,<?php echo $originLong; ?>);
 	var map;
+    var bounds = new google.maps.LatLngBounds();
 	
       function initialize() {
+	      
+	      
         var mapOptions = {
           center: originLatlng,
-          zoom: 16
         };
-        map = new google.maps.Map(document.getElementById("map-canvas"),
-            mapOptions);
+        map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
             
             
 <?php
@@ -87,6 +88,12 @@ if ($locationNearestTram != null)
         var nearestTramLatlng = new google.maps.LatLng(<?php echo $locationNearestTram->lat; ?>,<?php echo $locationNearestTram->lon; ?>);
         var ticketMachineLatlng = new google.maps.LatLng(<?php echo $locationTicketMachine->lat; ?>,<?php echo $locationTicketMachine->lon; ?>);
         var tramWithTicketLatlng = new google.maps.LatLng(<?php echo $locationTramWithTicket->lat; ?>,<?php echo $locationTramWithTicket->lon; ?>);
+        
+        
+		bounds.extend(originLatlng);
+		bounds.extend(nearestTramLatlng);
+		bounds.extend(ticketMachineLatlng);
+		bounds.extend(tramWithTicketLatlng);
         
 		var nearestTramInfoWindow = new google.maps.InfoWindow({
 			content: '<?php echo $contentNearestTram ?>'
@@ -102,7 +109,9 @@ if ($locationNearestTram != null)
 		
 	  directionsDisplay = new google.maps.DirectionsRenderer();	  
 	  directionsDisplay.setMap(map);
-	        
+	       
+	  
+	   
 	  var requestDirect = {
 	    origin:originLatlng,
 	    destination:nearestTramLatlng,
@@ -116,11 +125,13 @@ if ($locationNearestTram != null)
         var originMarker = new google.maps.Marker({
 	    	position: new google.maps.LatLng(result.routes[0].legs[0].start_location.k,result.routes[0].legs[0].start_location.A),
 	    	map: map,
+	    	icon: 'http://maps.google.com/mapfiles/kml/pal3/icon56.png',
 	    	title:"You are here"
 		});
         var nearestTramMarker = new google.maps.Marker({
 	    	position: new google.maps.LatLng(result.routes[0].legs[0].end_location.k,result.routes[0].legs[0].end_location.A),
 	    	map: map,
+	    	icon: 'http://maps.google.com/mapfiles/kml/pal3/icon56.png',
 	    	title:"Nearest tram stop"
 		});
 		google.maps.event.addListener(nearestTramMarker, 'click', function() {
@@ -148,6 +159,7 @@ if ($locationNearestTram != null)
         var ticketMachineMarker = new google.maps.Marker({
 	    	position: new google.maps.LatLng(result.routes[0].legs[0].end_location.k,result.routes[0].legs[0].end_location.A),
 	    	map: map,
+	    	icon: 'http://maps.google.com/mapfiles/kml/pal3/icon56.png',
 	    	title:"Nearest myki machine"
 		});
 		google.maps.event.addListener(ticketMachineMarker, 'click', function() {
@@ -156,6 +168,7 @@ if ($locationNearestTram != null)
         var tramWithTicketMarker = new google.maps.Marker({
 	    	position: new google.maps.LatLng(result.routes[0].legs[1].end_location.k,result.routes[0].legs[1].end_location.A),
 	    	map: map,
+	    	icon: 'http://maps.google.com/mapfiles/kml/pal3/icon56.png',
 	    	title:"Nearest tram stop"
 		});
 		google.maps.event.addListener(tramWithTicketMarker, 'click', function() {
@@ -165,6 +178,8 @@ if ($locationNearestTram != null)
 	      console.log('Myki: ' + result.routes[0].legs[0].distance.text + ' ' + result.routes[0].legs[0].duration.text);
 	    }
 	  });
+	  
+	  map.fitBounds(bounds);
 	  
 	  
 <?php
@@ -176,10 +191,23 @@ if ($locationNearestTram != null)
 	function renderDirections(result) {
 		var rendererOptions = { 
 	      map: map, 
+	      preserveViewport: true,
 	      suppressMarkers : true 
 	    } 
 		var directionsRenderer = new google.maps.DirectionsRenderer(rendererOptions);
 		directionsRenderer.setDirections(result);
+		
+		var myRoute = result.routes[0].legs[0];
+		
+		for (var i = 0; i < myRoute.steps.length; i++) {
+			var marker = new google.maps.Marker({
+		        position: myRoute.steps[i].start_point,
+		        map: map
+      		});
+			
+			
+			//bounds.extend(myRoute.steps[i].start_point);
+		}
 	}
 
       google.maps.event.addDomListener(window, 'load', initialize);
