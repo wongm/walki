@@ -31,20 +31,20 @@ if ($locationNearestTram != null)
 {
 	$markerNearestTram = "&markers=color:green%7Clabel:T%7C$locationNearestTram->lat,$locationNearestTram->lon";
 	$pathNearestTram = "&path=color:green|weight:5|$originLat,$originLong|$locationNearestTram->lat,$locationNearestTram->lon";
-	$contentNearestTram = "$locationNearestTram->distance metre walk to the nearest tram stop: " . trim($locationNearestTram->location_name);
+	$contentNearestTram = "<div class=\"lightbox\">$locationNearestTram->distance metre walk to the nearest tram stop:<br> " . trim($locationNearestTram->location_name) . "</div>";
 
 	// how far do I need to walk to the ticket machine from home?
 	$locationTicketMachine = getNearestPOI($poiTickets, $originLat, $originLong, $boundsOrigin);
 	$markerTicketMachine = "&markers=color:red%7Clabel:M%7C$locationTicketMachine->lat,$locationTicketMachine->lon";
 	$pathTicketMachine = "&path=color:red|weight:5|$originLat,$originLong|$locationTicketMachine->lat,$locationTicketMachine->lon";
-	$contentTicketMachine = "It\'s a $locationTicketMachine->distance metre walk to the nearest myki machine: $locationTicketMachine->business_name at " . trim($locationTicketMachine->location_name) . ", $locationTicketMachine->suburb";
+	$contentTicketMachine = "<div class=\"lightbox\">It\'s a $locationTicketMachine->distance metre walk to the nearest myki machine:<br> $locationTicketMachine->business_name at " . trim($locationTicketMachine->location_name) . ", $locationTicketMachine->suburb</div>";
 
 	// where is the nearest tram stop after the ticket machine?
 	$boundsTicketMachine = getOffsetLocationBounds($locationTicketMachine->lat, $locationTicketMachine->lon, $metresMaxWalkingDistance);
 	$locationTramWithTicket = getNearestPOI($poiTrams, $locationTicketMachine->lat, $locationTicketMachine->lon, $boundsTicketMachine);
 	$markerTramWithTicket = "&markers=color:red%7Clabel:T%7C$locationTramWithTicket->lat,$locationTramWithTicket->lon";
 	$pathTramWithTicket = "&path=color:red|weight:5|$locationTicketMachine->lat,$locationTicketMachine->lon|$locationTramWithTicket->lat,$locationTramWithTicket->lon";
-	$contentTramWithTicket = "You then need to walk $locationTramWithTicket->distance metres to the nearest tram stop: " . trim($locationTramWithTicket->location_name);
+	$contentTramWithTicket = "<div class=\"lightbox\">You then need to walk $locationTramWithTicket->distance metres to the nearest tram stop:<br> " . trim($locationTramWithTicket->location_name) . "</div>";
 
 	$extraMykiDistance = (($locationTicketMachine->distance + $locationTramWithTicket->distance) - $locationNearestTram->distance);
 }
@@ -60,6 +60,7 @@ global $config;
       html { height: 100% }
       body { height: 100%; margin: 0; padding: 0 }
       #map-canvas, #map-canvas2 { height: 100% }
+      .lightbox { height: 200px; }
     </style>
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=<?php echo $config['googleapi'] ?>&sensor=false">
@@ -95,17 +96,6 @@ if ($locationNearestTram != null)
 		bounds.extend(ticketMachineLatlng);
 		bounds.extend(tramWithTicketLatlng);
         
-		var nearestTramInfoWindow = new google.maps.InfoWindow({
-			content: '<?php echo $contentNearestTram ?>'
-  		});
-		
-		var ticketMachineInfoWindow = new google.maps.InfoWindow({
-			content: '<?php echo $contentTicketMachine ?>'
-  		});
-		
-		var tramWithTicketInfoWindow = new google.maps.InfoWindow({
-			content: '<?php echo $contentTramWithTicket ?>'
-  		});
 		
 	  directionsDisplay = new google.maps.DirectionsRenderer();	  
 	  directionsDisplay.setMap(map);
@@ -121,6 +111,7 @@ if ($locationNearestTram != null)
 	    if (status == google.maps.DirectionsStatus.OK) {
           renderDirections(result);
           
+	      var mtext = 'Direct: ' + result.routes[0].legs[0].distance.text + ' ' + result.routes[0].legs[0].duration.text;
           
         var originMarker = new google.maps.Marker({
 	    	position: new google.maps.LatLng(result.routes[0].legs[0].start_location.k,result.routes[0].legs[0].start_location.A),
@@ -131,14 +122,16 @@ if ($locationNearestTram != null)
         var nearestTramMarker = new google.maps.Marker({
 	    	position: new google.maps.LatLng(result.routes[0].legs[0].end_location.k,result.routes[0].legs[0].end_location.A),
 	    	map: map,
-	    	icon: 'http://maps.google.com/mapfiles/kml/pal3/icon56.png',
+	    	icon: 'http://maps.google.com/mapfiles/ms/micons/green.png',
 	    	title:"Nearest tram stop"
 		});
+		var nearestTramInfoWindow = new google.maps.InfoWindow({
+			content: '<?php echo $contentNearestTram ?> ' + mtext
+  		});
 		google.maps.event.addListener(nearestTramMarker, 'click', function() {
     		nearestTramInfoWindow.open(map,nearestTramMarker);
 		});
           
-	      console.log('Direct: ' + result.routes[0].legs[0].distance.text + ' ' + result.routes[0].legs[0].duration.text);
 	    }
 	  });
 	  
@@ -156,10 +149,22 @@ if ($locationNearestTram != null)
 	    if (status == google.maps.DirectionsStatus.OK) {
           renderDirections(result);
           
+	      var m1text = 'Myki machine: ' + result.routes[0].legs[0].distance.text + ' ' + result.routes[0].legs[0].duration.text;
+	      var m2text = 'To tram: ' + result.routes[0].legs[1].distance.text + ' ' + result.routes[0].legs[1].duration.text;
+	      
+		
+		var ticketMachineInfoWindow = new google.maps.InfoWindow({
+			content: '<?php echo $contentTicketMachine ?> ' + m1text
+  		});
+		
+		var tramWithTicketInfoWindow = new google.maps.InfoWindow({
+			content: '<?php echo $contentTramWithTicket ?> ' + m2text
+  		});
+  		
         var ticketMachineMarker = new google.maps.Marker({
 	    	position: new google.maps.LatLng(result.routes[0].legs[0].end_location.k,result.routes[0].legs[0].end_location.A),
 	    	map: map,
-	    	icon: 'http://maps.google.com/mapfiles/kml/pal3/icon56.png',
+	    	icon: 'http://maps.google.com/mapfiles/ms/micons/orange.png',
 	    	title:"Nearest myki machine"
 		});
 		google.maps.event.addListener(ticketMachineMarker, 'click', function() {
@@ -168,14 +173,13 @@ if ($locationNearestTram != null)
         var tramWithTicketMarker = new google.maps.Marker({
 	    	position: new google.maps.LatLng(result.routes[0].legs[1].end_location.k,result.routes[0].legs[1].end_location.A),
 	    	map: map,
-	    	icon: 'http://maps.google.com/mapfiles/kml/pal3/icon56.png',
+	    	icon: 'http://maps.google.com/mapfiles/ms/micons/red.png',
 	    	title:"Nearest tram stop"
 		});
 		google.maps.event.addListener(tramWithTicketMarker, 'click', function() {
     		tramWithTicketInfoWindow.open(map,tramWithTicketMarker);
 		});
 		
-	      console.log('Myki: ' + result.routes[0].legs[0].distance.text + ' ' + result.routes[0].legs[0].duration.text);
 	    }
 	  });
 	  
@@ -196,18 +200,6 @@ if ($locationNearestTram != null)
 	    } 
 		var directionsRenderer = new google.maps.DirectionsRenderer(rendererOptions);
 		directionsRenderer.setDirections(result);
-		
-		var myRoute = result.routes[0].legs[0];
-		
-		for (var i = 0; i < myRoute.steps.length; i++) {
-			var marker = new google.maps.Marker({
-		        position: myRoute.steps[i].start_point,
-		        map: map
-      		});
-			
-			
-			//bounds.extend(myRoute.steps[i].start_point);
-		}
 	}
 
       google.maps.event.addDomListener(window, 'load', initialize);
