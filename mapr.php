@@ -65,20 +65,19 @@ global $config;
       src="https://maps.googleapis.com/maps/api/js?key=<?php echo $config['googleapi'] ?>&sensor=false">
     </script>
     <script type="text/javascript">
-      function initialize2() {
+    var directionsDisplay;
+	var directionsService = new google.maps.DirectionsService();
+    var originLatlng = new google.maps.LatLng(<?php echo $originLat; ?>,<?php echo $originLong; ?>);
+	var map;
+	
+      function initialize() {
         var mapOptions = {
-          center: new google.maps.LatLng(<?php echo $originLat; ?>,<?php echo $originLong; ?>),
+          center: originLatlng,
           zoom: 16
         };
-        var map = new google.maps.Map(document.getElementById("map-canvas"),
+        map = new google.maps.Map(document.getElementById("map-canvas"),
             mapOptions);
             
-        var originLatlng = new google.maps.LatLng(<?php echo $originLat; ?>,<?php echo $originLong; ?>);
-        var originMarker = new google.maps.Marker({
-	    	position: originLatlng,
-	    	map: map,
-	    	title:"You are here"
-		});
             
 <?php
 
@@ -92,61 +91,18 @@ if ($locationNearestTram != null)
 		var nearestTramInfoWindow = new google.maps.InfoWindow({
 			content: '<?php echo $contentNearestTram ?>'
   		});
-        var nearestTramMarker = new google.maps.Marker({
-	    	position: nearestTramLatlng,
-	    	map: map,
-	    	title:"Nearest tram stop"
-		});
-		google.maps.event.addListener(nearestTramMarker, 'click', function() {
-    		nearestTramInfoWindow.open(map,nearestTramMarker);
-		});
 		
 		var ticketMachineInfoWindow = new google.maps.InfoWindow({
 			content: '<?php echo $contentTicketMachine ?>'
   		});
-        var ticketMachineMarker = new google.maps.Marker({
-	    	position: ticketMachineLatlng,
-	    	map: map,
-	    	title:"Nearest myki machine"
-		});
-		google.maps.event.addListener(ticketMachineMarker, 'click', function() {
-    		ticketMachineInfoWindow.open(map,ticketMachineMarker);
-		});
 		
 		var tramWithTicketInfoWindow = new google.maps.InfoWindow({
 			content: '<?php echo $contentTramWithTicket ?>'
   		});
-        var tramWithTicketMarker = new google.maps.Marker({
-	    	position: tramWithTicketLatlng,
-	    	map: map,
-	    	title:"Nearest tram stop"
-		});
-		google.maps.event.addListener(tramWithTicketMarker, 'click', function() {
-    		tramWithTicketInfoWindow.open(map,tramWithTicketMarker);
-		});
 		
-		
-	}
-	
-	var directionsDisplay;
-	var directionsService = new google.maps.DirectionsService();
-    var originLatlng = new google.maps.LatLng(<?php echo $originLat; ?>,<?php echo $originLong; ?>);
-	var map;
-	
-		
-	function initialize() {
-	  directionsDisplay = new google.maps.DirectionsRenderer();
-	  var mapOptions = {
-	    zoom:7,
-	    center: originLatlng
-	  }
-	  map = new google.maps.Map(document.getElementById("map-canvas2"), mapOptions);
+	  directionsDisplay = new google.maps.DirectionsRenderer();	  
 	  directionsDisplay.setMap(map);
-	  
-	var nearestTramLatlng = new google.maps.LatLng(<?php echo $locationNearestTram->lat; ?>,<?php echo $locationNearestTram->lon; ?>);
-	var ticketMachineLatlng = new google.maps.LatLng(<?php echo $locationTicketMachine->lat; ?>,<?php echo $locationTicketMachine->lon; ?>);
-	var tramWithTicketLatlng = new google.maps.LatLng(<?php echo $locationTramWithTicket->lat; ?>,<?php echo $locationTramWithTicket->lon; ?>);
-      
+	        
 	  var requestDirect = {
 	    origin:originLatlng,
 	    destination:nearestTramLatlng,
@@ -154,26 +110,58 @@ if ($locationNearestTram != null)
 	  };
 	  directionsService.route(requestDirect, function(result, status) {
 	    if (status == google.maps.DirectionsStatus.OK) {
-        renderDirections(result);
+          renderDirections(result);
+          
+          
+        var originMarker = new google.maps.Marker({
+	    	position: new google.maps.LatLng(result.routes[0].legs[0].start_location.k,result.routes[0].legs[0].start_location.A),
+	    	map: map,
+	    	title:"You are here"
+		});
+        var nearestTramMarker = new google.maps.Marker({
+	    	position: new google.maps.LatLng(result.routes[0].legs[0].end_location.k,result.routes[0].legs[0].end_location.A),
+	    	map: map,
+	    	title:"Nearest tram stop"
+		});
+		google.maps.event.addListener(nearestTramMarker, 'click', function() {
+    		nearestTramInfoWindow.open(map,nearestTramMarker);
+		});
+          
 	      console.log('Direct: ' + result.routes[0].legs[0].distance.text + ' ' + result.routes[0].legs[0].duration.text);
 	    }
 	  });
 	  
-	  var waypts = [];
-	  waypts.push({
-          location:ticketMachineLatlng,
-          stopover:true
-      });
-	  
 	  var requestMyki = {
 	    origin:originLatlng,
 	    destination:tramWithTicketLatlng,
-        waypoints: waypts,
+        waypoints: [
+	    {
+	      location:ticketMachineLatlng,
+	      stopover:true
+	    }],
 	    travelMode: google.maps.TravelMode.WALKING
 	  };
 	  directionsService.route(requestMyki, function(result, status) {
 	    if (status == google.maps.DirectionsStatus.OK) {
-        renderDirections(result);
+          renderDirections(result);
+          
+        var ticketMachineMarker = new google.maps.Marker({
+	    	position: new google.maps.LatLng(result.routes[0].legs[0].end_location.k,result.routes[0].legs[0].end_location.A),
+	    	map: map,
+	    	title:"Nearest myki machine"
+		});
+		google.maps.event.addListener(ticketMachineMarker, 'click', function() {
+    		ticketMachineInfoWindow.open(map,ticketMachineMarker);
+		});
+        var tramWithTicketMarker = new google.maps.Marker({
+	    	position: new google.maps.LatLng(result.routes[0].legs[1].end_location.k,result.routes[0].legs[1].end_location.A),
+	    	map: map,
+	    	title:"Nearest tram stop"
+		});
+		google.maps.event.addListener(tramWithTicketMarker, 'click', function() {
+    		tramWithTicketInfoWindow.open(map,tramWithTicketMarker);
+		});
+		
 	      console.log('Myki: ' + result.routes[0].legs[0].distance.text + ' ' + result.routes[0].legs[0].duration.text);
 	    }
 	  });
@@ -181,14 +169,16 @@ if ($locationNearestTram != null)
 	  
 <?php
 }
-
 ?>
 
       }
       
 	function renderDirections(result) {
-		var directionsRenderer = new google.maps.DirectionsRenderer;
-		directionsRenderer.setMap(map);
+		var rendererOptions = { 
+	      map: map, 
+	      suppressMarkers : true 
+	    } 
+		var directionsRenderer = new google.maps.DirectionsRenderer(rendererOptions);
 		directionsRenderer.setDirections(result);
 	}
 
@@ -229,7 +219,6 @@ else
 }
 
 ?>
-    <div id="map-canvas" style="display:none"></div>
-    <div id="map-canvas2"></div>
+    <div id="map-canvas"></div>
   </body>
 </html>
