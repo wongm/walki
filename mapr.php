@@ -64,11 +64,26 @@ global $config;
     <script type="text/javascript">
       function initialize() {
         var mapOptions = {
-          center: new google.maps.LatLng(<?php echo $originLat; ?>, <?php echo $originLong; ?>),
+          center: new google.maps.LatLng(<?php echo $originLat; ?>,<?php echo $originLong; ?>),
           zoom: 16
         };
         var map = new google.maps.Map(document.getElementById("map-canvas"),
             mapOptions);
+            
+        var homeLatlng = new google.maps.LatLng(<?php echo $originLat; ?>,<?php echo $originLong; ?>);
+        var homeMarker = new google.maps.Marker({
+	    	position: homeLatlng,
+	    	map: map,
+	    	title:"You are here"
+		});
+            
+<?php
+
+
+
+
+?>
+
       }
       google.maps.event.addDomListener(window, 'load', initialize);
     </script>
