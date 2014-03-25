@@ -22,8 +22,6 @@ $boundsOrigin = getOffsetLocationBounds($originLat, $originLong, $metresMaxWalki
 $poiTickets = 100;
 $poiTrams = 1;
 
-$markerOrigin = "&markers=color:blue%7Clabel:H%7C$originLat,$originLong";
-
 // nearest tram
 $locationNearestTram = getNearestPOI($poiTrams, $originLat, $originLong, $boundsOrigin);
 
@@ -39,12 +37,7 @@ if ($locationNearestTram != null)
     $boundsTicketMachine = getOffsetLocationBounds($locationTicketMachine->lat, $locationTicketMachine->lon, $metresMaxWalkingDistance);
     $locationTramWithTicket = getNearestPOI($poiTrams, $locationTicketMachine->lat, $locationTicketMachine->lon, $boundsTicketMachine);
     $contentTramWithTicket = trim($locationTramWithTicket->location_name);
-}
-
-global $config;
-
-if ($locationNearestTram != null)
-{
+    
     $jsondata = array(
         "nearestTram" => array(
             "content" => $contentNearestTram,
@@ -62,8 +55,12 @@ if ($locationNearestTram != null)
             "lng" => $locationTramWithTicket->lon,
             )
     );
-    
-    header('Content-Type: application/json');
-    echo json_encode(array("feed" => $jsondata));
 }
+else
+{
+    $jsondata = array("error" => "No tram stops found", "code" => 1);
+}
+    
+header('Content-Type: application/json');
+echo json_encode(array("feed" => $jsondata));
 ?>
