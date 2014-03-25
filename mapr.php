@@ -196,8 +196,8 @@ if ($locationNearestTram != null)
                     title:"You are here"
                 });
                 
-                document.getElementById('originLat').innerHTML = originMarker.position.lat();
-                document.getElementById('originLng').innerHTML = originMarker.position.lng();
+                document.getElementById('originLat').innerHTML = originMarker.position.lat().toFixed(6);
+                document.getElementById('originLng').innerHTML = originMarker.position.lng().toFixed(6);
                 
                 google.maps.event.addListener(originMarker, 'click', function() {
                     infoWindow.setContent(document.getElementById('originContent').innerHTML);
@@ -218,8 +218,8 @@ if ($locationNearestTram != null)
                 nearestDuration = result.routes[0].legs[0].duration;
                 
                 document.getElementById('nearestName').innerHTML = '<?php echo $contentNearestTram ?>';
-                document.getElementById('nearestDistance').innerHTML = nearestDistance;
-                document.getElementById('nearestDuration').innerHTML = nearestDuration;
+                document.getElementById('nearestDistance').innerHTML = formatDistance(nearestDistance);
+                document.getElementById('nearestDuration').innerHTML = nearestDuration.text;
                 
                 google.maps.event.addListener(nearestTramMarker, 'click', function() {
                     infoWindow.setContent(document.getElementById('nearestTramContent').innerHTML);
@@ -255,8 +255,8 @@ if ($locationNearestTram != null)
                 ticketDuration = result.routes[0].legs[0].duration;
                 
                 document.getElementById('ticketMachineName').innerHTML = '<?php echo $contentTicketMachine ?>';
-                document.getElementById('ticketDistance').innerHTML = ticketDistance;
-                document.getElementById('ticketDuration').innerHTML = ticketDuration;
+                document.getElementById('ticketDistance').innerHTML = formatDistance(ticketDistance);
+                document.getElementById('ticketDuration').innerHTML = ticketDuration.text;
                 
                 google.maps.event.addListener(ticketMachineMarker, 'click', function() {
                     infoWindow.setContent(document.getElementById('ticketMachineContent').innerHTML);
@@ -274,8 +274,8 @@ if ($locationNearestTram != null)
                 tramDuration = result.routes[0].legs[1].duration;
                 
                 document.getElementById('tramName').innerHTML = '<?php echo $contentTramWithTicket ?>';
-                document.getElementById('tramDistance').innerHTML = tramDistance;
-                document.getElementById('tramDuration').innerHTML = tramDuration;
+                document.getElementById('tramDistance').innerHTML = formatDistance(tramDistance);
+                document.getElementById('tramDuration').innerHTML = tramDuration.text;
                 
                 google.maps.event.addListener(tramWithTicketMarker, 'click', function() {
                     infoWindow.setContent(document.getElementById('tramWithTicketContent').innerHTML);
