@@ -60,7 +60,7 @@ global $config;
             max-width: 400px;
             text-align: center;
         }
-        .infoWindow p { 
+        .infoWindow p, .infoWindow span { 
         	font-size: 15px !important;
         }
         .infoWindow div {
