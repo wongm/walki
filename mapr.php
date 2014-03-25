@@ -196,14 +196,15 @@ if ($locationNearestTram != null)
                     title:"You are here"
                 });
                 
-                originContent = getOriginContent(originMarker.position);
+                document.getElementById('originLat').innerHTML = originMarker.position.lat();
+                document.getElementById('originLng').innerHTML = originMarker.position.lng();
                 
                 google.maps.event.addListener(originMarker, 'click', function() {
-                    infoWindow.setContent(originContent);
+                    infoWindow.setContent(document.getElementById('originContent').innerHTML);
                     infoWindow.open(map, this);
                 });
                 
-                infoWindow.setContent(originContent);
+                infoWindow.setContent(document.getElementById('originContent').innerHTML);
                 infoWindow.open(map, originMarker);
                 
                 nearestTramMarker = new google.maps.Marker({
@@ -215,10 +216,13 @@ if ($locationNearestTram != null)
                 
                 nearestDistance = result.routes[0].legs[0].distance;
                 nearestDuration = result.routes[0].legs[0].duration;
-                nearestTramContent = getNearestTramContent(nearestTramMarker.position, nearestDistance, nearestDuration);
+                
+                document.getElementById('nearestName').innerHTML = '<?php echo $contentNearestTram ?>';
+                document.getElementById('nearestDistance').innerHTML = nearestDistance;
+                document.getElementById('nearestDuration').innerHTML = nearestDuration;
                 
                 google.maps.event.addListener(nearestTramMarker, 'click', function() {
-                    infoWindow.setContent(nearestTramContent);
+                    infoWindow.setContent(document.getElementById('nearestTramContent').innerHTML);
                     infoWindow.open(map, this);
                 });
                 
@@ -249,10 +253,13 @@ if ($locationNearestTram != null)
                 
                 ticketDistance = result.routes[0].legs[0].distance;
                 ticketDuration = result.routes[0].legs[0].duration;
-                ticketMachineContent = getTicketMachineContent(ticketMachineMarker.position, ticketDistance, ticketDuration);
+                
+                document.getElementById('ticketMachineName').innerHTML = '<?php echo $contentTicketMachine ?>';
+                document.getElementById('ticketDistance').innerHTML = ticketDistance;
+                document.getElementById('ticketDuration').innerHTML = ticketDuration;
                 
                 google.maps.event.addListener(ticketMachineMarker, 'click', function() {
-                    infoWindow.setContent(ticketMachineContent);
+                    infoWindow.setContent(document.getElementById('ticketMachineContent').innerHTML);
                        infoWindow.open(map, this);
                 });
                 
@@ -265,10 +272,13 @@ if ($locationNearestTram != null)
                 
                 tramDistance = result.routes[0].legs[1].distance;
                 tramDuration = result.routes[0].legs[1].duration;
-                tramWithTicketContent = getTramWithTicketContent(tramWithTicketMarker.position, tramDistance, tramDuration);
+                
+                document.getElementById('tramName').innerHTML = '<?php echo $contentTramWithTicket ?>';
+                document.getElementById('tramDistance').innerHTML = tramDistance;
+                document.getElementById('tramDuration').innerHTML = tramDuration;
                 
                 google.maps.event.addListener(tramWithTicketMarker, 'click', function() {
-                    infoWindow.setContent(tramWithTicketContent);
+                    infoWindow.setContent(document.getElementById('tramWithTicketContent').innerHTML);
                        infoWindow.open(map, this);
                 });
                 
@@ -291,26 +301,6 @@ if ($locationNearestTram != null)
         }
         return distance.text;
     }
-        
-    function getOriginContent(position)
-    {
-        return '<div class="infoWindow"><h1>Welcome!</h1><p>You\'re currently at ' + position.lat().toFixed(6) + ', ' + position.lng().toFixed(6) + '</p><p><a href="#" onclick="google.maps.event.trigger(nearestTramMarker, \'click\')">Which way to the tram stop?</a></p></div>';
-    }
-    
-    function getNearestTramContent(position, distance, duration)
-    {
-        return '<div class="infoWindow"><h1>Your nearest tram stop</h1><p><?php echo $contentNearestTram ?> is your nearest tram stop - it\'s only <strong>' + formatDistance(distance) + '</strong> away, which is a <strong>' + duration.text + '</strong> walk down the street.</p><p><a href="#" onclick="google.maps.event.trigger(ticketMachineMarker, \'click\')">So where can I buy a ticket?</a></p></div>';
-    }
-    
-    function getTicketMachineContent(position, distance, duration)
-    {
-        return '<div class="infoWindow"><h1>Buying a ticket</h1><p>Unfortunatly because you can\'t buy a ticket on the tram, you\'ll have to visit your nearest myki retailer: <?php echo $contentTicketMachine ?>.</p><p>It\'s only <strong>' + formatDistance(distance) + '</strong> down the road, which is a <strong>' + duration.text + '</strong> walk.</p><p><a href="#" onclick="google.maps.event.trigger(tramWithTicketMarker, \'click\')">So - back to the tram with my new ticket!</a></p></div>';
-    }
-    
-    function getTramWithTicketContent(position, distance, duration)
-    {
-        return '<div class="infoWindow"><h1>Back to the tram</h1><p>Now that you have your ticket, you\'re ready to ride!</p><p>Your nearest tram stop is <?php echo $contentTramWithTicket ?> - <strong>' + formatDistance(distance) + '</strong> down the road, which is a <strong>' + duration.text + '</strong> walk.</p><p><a href="#" onclick="displayFinalLightbox()">What a waste!</a></p></div>';
-    }
     
     function setupFinalLightboxContent()
     {
@@ -322,15 +312,15 @@ if ($locationNearestTram != null)
             if (extraDistance < 1000) {
                 extraDistance += ' metres';
             } else {
-                extraDistance = (extraDistance / 1000).toFixed(2) + ' kilometers';
+                extraDistance = (extraDistance / 1000).toFixed(2) + ' km';
             }
             
-            document.getElementById('nearestMinutes').innerHTML = nearestDuration.text;
-            document.getElementById('nearestDistance').innerHTML = formatDistance(nearestDistance);
-            document.getElementById('ticketDistance').innerHTML = formatDistance(ticketDistance);
-            document.getElementById('tramDistance').innerHTML = formatDistance(tramDistance);
-            document.getElementById('extraDistance').innerHTML = extraDistance;
-            document.getElementById('extraTime').innerHTML = extraTime + ' minutes';
+            document.getElementById('nearestDurationLB').innerHTML = nearestDuration.text;
+            document.getElementById('nearestDistanceLB').innerHTML = formatDistance(nearestDistance);
+            document.getElementById('ticketDistanceLB').innerHTML = formatDistance(ticketDistance);
+            document.getElementById('tramDistanceLB').innerHTML = formatDistance(tramDistance);
+            document.getElementById('extraDistanceLB').innerHTML = extraDistance;
+            document.getElementById('extraTimeLB').innerHTML = extraTime + ' minutes';
         }
     }
     
@@ -380,10 +370,34 @@ if ($locationNearestTram == null)
     <div id="light" class="white_content">
         <h1>Sheesh!</h1>
         <p>Quite the journey to buy a ticket, wasn't it?</p>
-        <p>If you could buy a ticket on the tram, it would have taken you only <strong id="nearestMinutes"></strong> to walk the <strong id="nearestDistance"></strong> to your nearest stop and board a tram.</p>
-        <p>Instead, you had to walk <strong id="ticketDistance"></strong> to a myki retailer, and then <strong id="tramDistance"></strong> back to the tram stop.</p>
-        <p>All up, that is an extra <strong id="extraDistance"></strong> walk - or <strong id="extraTime"></strong> you had to waste because of a lack of onboard ticket sales.</p>
+        <p>If you could buy a ticket on the tram, it would have taken you only <strong id="nearestDurationLB"></strong> to walk the <strong id="nearestDistanceLB"></strong> to your nearest stop and board a tram.</p>
+        <p>Instead, you had to walk <strong id="ticketDistanceLB"></strong> to a myki retailer, and then <strong id="tramDistanceLB"></strong> back to the tram stop.</p>
+        <p>All up, that is an extra <strong id="extraDistanceLB"></strong> walk - or <strong id="extraTimeLB"></strong> you had to waste because of a lack of onboard ticket sales.</p>
     </div>
     <div id="fade" class="black_overlay"></div>
+    <div style="display:none">
+        <div id="originContent"><div class="infoWindow">
+            <h1>Welcome!</h1>
+            <p>You're currently at <span id="originLat"></span>, <span id="originLng"></span></p>
+            <p><a href="#" onclick="google.maps.event.trigger(nearestTramMarker, 'click')">Which way to the tram stop?</a></p>
+        </div></div>
+        <div id="nearestTramContent"><div class="infoWindow">
+            <h1>Your nearest tram stop</h1>
+            <p><span id="nearestName"></span> is your nearest tram stop - it's only <strong id="nearestDistance"></strong> away, which is a <strong id="nearestDuration"></strong> walk down the street.</p>
+            <p><a href="#" onclick="google.maps.event.trigger(ticketMachineMarker, 'click')">So where can I buy a ticket?</a></p>
+        </div></div>
+        <div id="ticketMachineContent"><div class="infoWindow">
+            <h1>Buying a ticket</h1>
+            <p>Unfortunatly because you can't buy a ticket on the tram, you'll have to visit your nearest myki retailer: <span id="ticketMachineName"></span>.</p>
+            <p>It's only <strong id="ticketDistance"></strong> down the road, which is a <strong id="ticketDuration"></strong> walk.</p>
+            <p><a href="#" onclick="google.maps.event.trigger(tramWithTicketMarker, 'click')">So - back to the tram with my new ticket!</a></p>
+        </div></div>
+        <div id="tramWithTicketContent"><div class="infoWindow">
+            <h1>Back to the tram</h1>
+            <p>Now that you have your ticket, you're ready to ride!</p>
+            <p>Your nearest tram stop is <span id="tramName"></span> - <strong id="tramDistance"></strong> down the road, which is a <strong id="tramDuration"></strong> walk.</p>
+            <p><a href="#" onclick="displayFinalLightbox()">What a waste!</a></p>
+        </div></div>    
+    </div>
   </body>
 </html>
