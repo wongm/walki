@@ -14,76 +14,83 @@ function loadMap(xhr, stopResults) {
     if (stopResults.error) {
         displayFailure();
     }
-    
-    var originLatlng = new google.maps.LatLng(stopResults.current.lat, stopResults.current.lng);
-    var directionsService = new google.maps.DirectionsService();
+        
     var mapOptions = {
         center: originLatlng,
     };
-    map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
     
-    var nearestTramLatlng = new google.maps.LatLng(stopResults.nearestTram.lat, stopResults.nearestTram.lng);
-    var ticketMachineLatlng = new google.maps.LatLng(stopResults.ticketMachine.lat, stopResults.ticketMachine.lng);
-    var tramWithTicketLatlng = new google.maps.LatLng(stopResults.tramWithTicket.lat, stopResults.tramWithTicket.lng);
+    map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
     
     var bounds = new google.maps.LatLngBounds();
+    var originIcon;
+    
+    var originLatlng = new google.maps.LatLng(stopResults.current.lat, stopResults.current.lng);
+    var ticketMachineLatlng = new google.maps.LatLng(stopResults.ticketMachine.lat, stopResults.ticketMachine.lng);
+    var tramWithTicketLatlng = new google.maps.LatLng(stopResults.tramWithTicket.lat, stopResults.tramWithTicket.lng);
+    var nearestTramLatlng = originLatlng;
+    
+    switch (stopResults.type)
+    {
+        case 'home':
+            nearestTramLatlng = new google.maps.LatLng(stopResults.nearestTram.lat, stopResults.nearestTram.lng);
+            originIcon = 'http://maps.google.com/mapfiles/kml/pal3/icon56.png';
+            break;
+        case 'tram':
+            originIcon = 'http://maps.google.com/mapfiles/kml/pal3/icon20.png';
+            break;
+    }
+    
     bounds.extend(originLatlng);
     bounds.extend(nearestTramLatlng);
     bounds.extend(ticketMachineLatlng);
     bounds.extend(tramWithTicketLatlng);
     
+    var directionsService = new google.maps.DirectionsService();  
     var directionsDisplay = new google.maps.DirectionsRenderer();      
     directionsDisplay.setMap(map);
     
-    var requestDirect = {
-        origin:originLatlng,
-        destination:nearestTramLatlng,
-        travelMode: google.maps.TravelMode.WALKING
-    };
-    directionsService.route(requestDirect, function(directionResult, status) {
-        if (status == google.maps.DirectionsStatus.OK) {
-            renderDirections(directionResult);
-            
-            originMarker = new google.maps.Marker({
-                position: new google.maps.LatLng(directionResult.routes[0].legs[0].start_location.k, directionResult.routes[0].legs[0].start_location.A),
-                map: map,
-                icon: 'http://maps.google.com/mapfiles/kml/pal3/icon56.png',
-                title:"You are here"
-            });
-            
-            document.getElementById('originLat').innerHTML = originMarker.position.lat().toFixed(6);
-            document.getElementById('originLng').innerHTML = originMarker.position.lng().toFixed(6);
-            
-            google.maps.event.addListener(originMarker, 'click', function() {
-                infoWindow.setContent(document.getElementById('originContent').innerHTML);
-                infoWindow.open(map, this);
-            });
-            
-            infoWindow.setContent(document.getElementById('originContent').innerHTML);
-            infoWindow.open(map, originMarker);
-            
-            nearestTramMarker = new google.maps.Marker({
-                position: new google.maps.LatLng(directionResult.routes[0].legs[0].end_location.k, directionResult.routes[0].legs[0].end_location.A),
-                map: map,
-                icon: 'http://maps.google.com/mapfiles/ms/micons/green.png',
-                title:"Nearest tram stop"
-            });
-            
-            nearestDistance = directionResult.routes[0].legs[0].distance;
-            nearestDuration = directionResult.routes[0].legs[0].duration;
-            
-            document.getElementById('nearestName').innerHTML = stopResults.nearestTram.content;
-            document.getElementById('nearestDistance').innerHTML = formatDistance(nearestDistance);
-            document.getElementById('nearestDuration').innerHTML = nearestDuration.text;
-            
-            google.maps.event.addListener(nearestTramMarker, 'click', function() {
-                infoWindow.setContent(document.getElementById('nearestTramContent').innerHTML);
-                infoWindow.open(map, this);
-            });
-            
-            setupFinalLightboxContent();
-        }
-    });
+    if (stopResults.type == 'home')
+    {
+        var requestDirect = {
+            origin:originLatlng,
+            destination:nearestTramLatlng,
+            travelMode: google.maps.TravelMode.WALKING
+        };
+        directionsService.route(requestDirect, function(directionResult, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                renderDirections(directionResult);
+                
+                nearestTramMarker = new google.maps.Marker({
+                    position: new google.maps.LatLng(directionResult.routes[0].legs[0].end_location.k, directionResult.routes[0].legs[0].end_location.A),
+                    map: map,
+                    icon: 'http://maps.google.com/mapfiles/ms/micons/green.png',
+                    title: 'Nearest tram stop'
+                });
+                
+                nearestDistance = directionResult.routes[0].legs[0].distance;
+                nearestDuration = directionResult.routes[0].legs[0].duration;
+                
+                document.getElementById('nearestName').innerHTML = stopResults.nearestTram.name;
+                document.getElementById('nearestDistance').innerHTML = formatDistance(nearestDistance);
+                document.getElementById('nearestDuration').innerHTML = nearestDuration.text;
+                
+                google.maps.event.addListener(nearestTramMarker, 'click', function() {
+                    infoWindow.setContent(document.getElementById('nearestTramContent').innerHTML);
+                    infoWindow.open(map, this);
+                });
+                
+                setupFinalLightboxContent();
+            }
+        });
+    }
+    else
+    {
+        nearestDistance = new Object();
+        nearestDistance.value = 0;
+        nearestDuration = new Object();
+        nearestDuration.value = 0;
+    }
+        
   
     var requestMyki = {
         origin:originLatlng,
@@ -99,17 +106,43 @@ function loadMap(xhr, stopResults) {
         if (status == google.maps.DirectionsStatus.OK) {
             renderDirections(directionResult);
             
+            originMarker = new google.maps.Marker({
+                position: new google.maps.LatLng(directionResult.routes[0].legs[0].start_location.k, directionResult.routes[0].legs[0].start_location.A),
+                map: map,
+                icon: originIcon,
+                title: 'You are here'
+            });
+            
+            switch (stopResults.type)
+            {
+                case 'home':
+                    document.getElementById('originLat').innerHTML = originMarker.position.lat().toFixed(6);
+                    document.getElementById('originLng').innerHTML = originMarker.position.lng().toFixed(6);
+                    break;
+                case 'tram':
+                    document.getElementById('originName').innerHTML = stopResults.current.name;    
+                    break;
+            }
+            
+            google.maps.event.addListener(originMarker, 'click', function() {
+                infoWindow.setContent(document.getElementById('originName').innerHTML);
+                infoWindow.open(map, this);
+            });
+            
+            infoWindow.setContent(document.getElementById('originContent').innerHTML);
+            infoWindow.open(map, originMarker);
+            
             ticketMachineMarker = new google.maps.Marker({
                 position: new google.maps.LatLng(directionResult.routes[0].legs[0].end_location.k, directionResult.routes[0].legs[0].end_location.A),
                 map: map,
                 icon: 'http://maps.google.com/mapfiles/ms/micons/orange.png',
-                title:"Nearest myki machine"
+                title: 'Nearest myki machine'
             });
             
             ticketDistance = directionResult.routes[0].legs[0].distance;
             ticketDuration = directionResult.routes[0].legs[0].duration;
             
-            document.getElementById('ticketMachineName').innerHTML = stopResults.ticketMachine.content;
+            document.getElementById('ticketMachineName').innerHTML = stopResults.ticketMachine.name;
             document.getElementById('ticketDistance').innerHTML = formatDistance(ticketDistance);
             document.getElementById('ticketDuration').innerHTML = ticketDuration.text;
             
@@ -122,13 +155,13 @@ function loadMap(xhr, stopResults) {
                 position: new google.maps.LatLng(directionResult.routes[0].legs[1].end_location.k, directionResult.routes[0].legs[1].end_location.A),
                 map: map,
                 icon: 'http://maps.google.com/mapfiles/ms/micons/red.png',
-                title:"Nearest tram stop"
+                title: 'Nearest tram stop'
             });
             
             tramDistance = directionResult.routes[0].legs[1].distance;
             tramDuration = directionResult.routes[0].legs[1].duration;
             
-            document.getElementById('tramName').innerHTML = stopResults.tramWithTicket.content;
+            document.getElementById('tramName').innerHTML = stopResults.tramWithTicket.name;
             document.getElementById('tramDistance').innerHTML = formatDistance(tramDistance);
             document.getElementById('tramDuration').innerHTML = tramDuration.text;
             
@@ -140,7 +173,6 @@ function loadMap(xhr, stopResults) {
             setupFinalLightboxContent();
         }
     });
-    
     
     map.fitBounds(bounds);
 }
@@ -166,8 +198,11 @@ function setupFinalLightboxContent()
             extraDistance = (extraDistance / 1000).toFixed(2) + ' km';
         }
         
-        document.getElementById('nearestDurationLB').innerHTML = nearestDuration.text;
-        document.getElementById('nearestDistanceLB').innerHTML = formatDistance(nearestDistance);
+        if (document.getElementById('nearestDurationLB')) {
+            document.getElementById('nearestDurationLB').innerHTML = nearestDuration.text;
+            document.getElementById('nearestDistanceLB').innerHTML = formatDistance(nearestDistance);
+        }
+        
         document.getElementById('ticketDistanceLB').innerHTML = formatDistance(ticketDistance);
         document.getElementById('tramDistanceLB').innerHTML = formatDistance(tramDistance);
         document.getElementById('extraDistanceLB').innerHTML = extraDistance;

@@ -28,10 +28,8 @@ global $config;
     <script type="text/javascript" src="js/core.js"></script>
     <script type="text/javascript" src="js/mapr.js"></script>
     <script type="text/javascript">
-        function initialize() {
-            
-            var url = 'json.php?lat=<?php echo $originLat; ?>&long=<?php echo $originLong; ?>';
-            
+        function initialize() {            
+            var url = 'json.php?lat=<?php echo $originLat; ?>&long=<?php echo $originLong; ?>&type=tram';            
             ajax(url, {
                 onSuccess: loadMap,
                 onFailure: displayFailure,
@@ -46,7 +44,6 @@ global $config;
     <div id="light" class="white_content">
         <h1>Sheesh!</h1>
         <p>Quite the journey to buy a ticket, wasn't it?</p>
-        <p>If you could buy a ticket on the tram, it would have taken you only <strong id="nearestDurationLB"></strong> to walk the <strong id="nearestDistanceLB"></strong> to your nearest stop and board a tram.</p>
         <p>Instead, you had to walk <strong id="ticketDistanceLB"></strong> to a myki retailer, and then <strong id="tramDistanceLB"></strong> back to the tram stop.</p>
         <p>All up, that is an extra <strong id="extraDistanceLB"></strong> walk - or <strong id="extraTimeLB"></strong> you had to waste because of a lack of onboard ticket sales.</p>
     </div>
@@ -54,12 +51,7 @@ global $config;
     <div style="display:none">
         <div id="originContent"><div class="infoWindow">
             <h1>Welcome!</h1>
-            <p>You're currently at <span id="originLat"></span>, <span id="originLng"></span></p>
-            <p><a href="#" onclick="google.maps.event.trigger(nearestTramMarker, 'click')">Which way to the tram stop?</a></p>
-        </div></div>
-        <div id="nearestTramContent"><div class="infoWindow">
-            <h1>Your nearest tram stop</h1>
-            <p><span id="nearestName"></span> is your nearest tram stop - it's only <strong id="nearestDistance"></strong> away, which is a <strong id="nearestDuration"></strong> walk down the street.</p>
+            <p>You're currently at <span id="originName"></span></p>
             <p><a href="#" onclick="google.maps.event.trigger(ticketMachineMarker, 'click')">So where can I buy a ticket?</a></p>
         </div></div>
         <div id="ticketMachineContent"><div class="infoWindow">
