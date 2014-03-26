@@ -142,9 +142,8 @@ global $config;
         }
         
     </style>
-    <script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=<?php echo $config['googleapi'] ?>&sensor=false">
-    </script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=<?php echo $config['googleapi'] ?>&sensor=false"></script>
+    <script type="text/javascript" src="core.js"></script>
     <script type="text/javascript">
     var map;
     var infoWindow = new google.maps.InfoWindow();
@@ -155,21 +154,34 @@ global $config;
     
     function initialize() {
         
+        var url = 'json.php?lat=<?php echo $originLat; ?>&long=<?php echo $originLong; ?>';
+        
+        ajax(url, {
+            onSuccess: loadMap,
+            onFailure: displayFailure,
+            responseType: 'json',
+        });
+    }
+    function displayFailure(xhr, result) {
+        alert('fail');
+    }
     
-        var originLatlng = new google.maps.LatLng(<?php echo $originLat; ?>,<?php echo $originLong; ?>);
+    function loadMap(xhr, stopResults) {
+        
+        if (stopResults.error) {
+            displayFailure();
+        }
+        
+        var originLatlng = new google.maps.LatLng(stopResults.current.lat, stopResults.current.lng);
         var directionsService = new google.maps.DirectionsService();
         var mapOptions = {
             center: originLatlng,
         };
         map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-<?php
-
-if ($locationNearestTram != null)
-{
-?>
-        var nearestTramLatlng = new google.maps.LatLng(<?php echo $locationNearestTram->lat; ?>,<?php echo $locationNearestTram->lon; ?>);
-        var ticketMachineLatlng = new google.maps.LatLng(<?php echo $locationTicketMachine->lat; ?>,<?php echo $locationTicketMachine->lon; ?>);
-        var tramWithTicketLatlng = new google.maps.LatLng(<?php echo $locationTramWithTicket->lat; ?>,<?php echo $locationTramWithTicket->lon; ?>);
+        
+        var nearestTramLatlng = new google.maps.LatLng(stopResults.nearestTram.lat, stopResults.nearestTram.lng);
+        var ticketMachineLatlng = new google.maps.LatLng(stopResults.ticketMachine.lat, stopResults.ticketMachine.lng);
+        var tramWithTicketLatlng = new google.maps.LatLng(stopResults.tramWithTicket.lat, stopResults.tramWithTicket.lng);
         
         var bounds = new google.maps.LatLngBounds();
         bounds.extend(originLatlng);
@@ -185,12 +197,12 @@ if ($locationNearestTram != null)
             destination:nearestTramLatlng,
             travelMode: google.maps.TravelMode.WALKING
         };
-        directionsService.route(requestDirect, function(result, status) {
+        directionsService.route(requestDirect, function(directionResult, status) {
             if (status == google.maps.DirectionsStatus.OK) {
-                renderDirections(result);
+                renderDirections(directionResult);
                 
                 originMarker = new google.maps.Marker({
-                    position: new google.maps.LatLng(result.routes[0].legs[0].start_location.k,result.routes[0].legs[0].start_location.A),
+                    position: new google.maps.LatLng(directionResult.routes[0].legs[0].start_location.k, directionResult.routes[0].legs[0].start_location.A),
                     map: map,
                     icon: 'http://maps.google.com/mapfiles/kml/pal3/icon56.png',
                     title:"You are here"
@@ -208,16 +220,16 @@ if ($locationNearestTram != null)
                 infoWindow.open(map, originMarker);
                 
                 nearestTramMarker = new google.maps.Marker({
-                    position: new google.maps.LatLng(result.routes[0].legs[0].end_location.k,result.routes[0].legs[0].end_location.A),
+                    position: new google.maps.LatLng(directionResult.routes[0].legs[0].end_location.k, directionResult.routes[0].legs[0].end_location.A),
                     map: map,
                     icon: 'http://maps.google.com/mapfiles/ms/micons/green.png',
                     title:"Nearest tram stop"
                 });
                 
-                nearestDistance = result.routes[0].legs[0].distance;
-                nearestDuration = result.routes[0].legs[0].duration;
+                nearestDistance = directionResult.routes[0].legs[0].distance;
+                nearestDuration = directionResult.routes[0].legs[0].duration;
                 
-                document.getElementById('nearestName').innerHTML = '<?php echo $contentNearestTram ?>';
+                document.getElementById('nearestName').innerHTML = stopResults.nearestTram.content;
                 document.getElementById('nearestDistance').innerHTML = formatDistance(nearestDistance);
                 document.getElementById('nearestDuration').innerHTML = nearestDuration.text;
                 
@@ -240,21 +252,21 @@ if ($locationNearestTram != null)
             }],
             travelMode: google.maps.TravelMode.WALKING
         };
-        directionsService.route(requestMyki, function(result, status) {
+        directionsService.route(requestMyki, function(directionResult, status) {
             if (status == google.maps.DirectionsStatus.OK) {
-                renderDirections(result);
+                renderDirections(directionResult);
                 
                 ticketMachineMarker = new google.maps.Marker({
-                    position: new google.maps.LatLng(result.routes[0].legs[0].end_location.k,result.routes[0].legs[0].end_location.A),
+                    position: new google.maps.LatLng(directionResult.routes[0].legs[0].end_location.k, directionResult.routes[0].legs[0].end_location.A),
                     map: map,
                     icon: 'http://maps.google.com/mapfiles/ms/micons/orange.png',
                     title:"Nearest myki machine"
                 });
                 
-                ticketDistance = result.routes[0].legs[0].distance;
-                ticketDuration = result.routes[0].legs[0].duration;
+                ticketDistance = directionResult.routes[0].legs[0].distance;
+                ticketDuration = directionResult.routes[0].legs[0].duration;
                 
-                document.getElementById('ticketMachineName').innerHTML = '<?php echo $contentTicketMachine ?>';
+                document.getElementById('ticketMachineName').innerHTML = stopResults.ticketMachine.content;
                 document.getElementById('ticketDistance').innerHTML = formatDistance(ticketDistance);
                 document.getElementById('ticketDuration').innerHTML = ticketDuration.text;
                 
@@ -264,16 +276,16 @@ if ($locationNearestTram != null)
                 });
                 
                 tramWithTicketMarker = new google.maps.Marker({
-                    position: new google.maps.LatLng(result.routes[0].legs[1].end_location.k,result.routes[0].legs[1].end_location.A),
+                    position: new google.maps.LatLng(directionResult.routes[0].legs[1].end_location.k, directionResult.routes[0].legs[1].end_location.A),
                     map: map,
                     icon: 'http://maps.google.com/mapfiles/ms/micons/red.png',
                     title:"Nearest tram stop"
                 });
                 
-                tramDistance = result.routes[0].legs[1].distance;
-                tramDuration = result.routes[0].legs[1].duration;
+                tramDistance = directionResult.routes[0].legs[1].distance;
+                tramDuration = directionResult.routes[0].legs[1].duration;
                 
-                document.getElementById('tramName').innerHTML = '<?php echo $contentTramWithTicket ?>';
+                document.getElementById('tramName').innerHTML = stopResults.tramWithTicket.content;
                 document.getElementById('tramDistance').innerHTML = formatDistance(tramDistance);
                 document.getElementById('tramDuration').innerHTML = tramDuration.text;
                 
@@ -288,10 +300,6 @@ if ($locationNearestTram != null)
         
         
         map.fitBounds(bounds);
-      
-<?php
-}
-?>
     }
     
     function formatDistance(distance)

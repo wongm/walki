@@ -39,6 +39,10 @@ if ($locationNearestTram != null)
     $contentTramWithTicket = trim($locationTramWithTicket->location_name);
     
     $jsondata = array(
+        "current" => array(
+            "lat" => $originLat,
+            "lng" => $originLong,
+            ),
         "nearestTram" => array(
             "content" => $contentNearestTram,
             "lat" => $locationNearestTram->lat,
@@ -62,5 +66,5 @@ else
 }
     
 header('Content-Type: application/json');
-echo json_encode(array("feed" => $jsondata));
+echo json_encode($jsondata);
 ?>
