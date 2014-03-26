@@ -43,26 +43,27 @@ global $config;
     <div id="map-canvas"></div>
     <div id="light" class="white_content">
         <h1>Sheesh!</h1>
-        <p>Quite the journey to buy a ticket, wasn't it?</p>
-        <p>Instead, you had to walk <strong id="ticketDistanceLB"></strong> to a myki retailer, and then <strong id="tramDistanceLB"></strong> back to the tram stop.</p>
-        <p>All up, that is an extra <strong id="extraDistanceLB"></strong> walk - or <strong id="extraTimeLB"></strong> you had to waste because of a lack of onboard ticket sales.</p>
+        <p>Quite the journey to top up your myki, wasn't it?</p>
+        <p>You've just had to had to walk <strong id="ticketDistanceLB"></strong> to a myki retailer, and then <strong id="tramDistanceLB"></strong> back to a tram.</p>
+        <p>All up, that is an extra <strong id="extraDistanceLB"></strong> walk - or <strong id="extraTimeLB"></strong> you had to waste because you can't top up on your myki on a tram.</p>
     </div>
     <div id="fade" class="black_overlay"></div>
     <div style="display:none">
         <div id="originContent"><div class="infoWindow">
             <h1>Welcome!</h1>
-            <p>You're currently at <span id="originName"></span></p>
-            <p><a href="#" onclick="google.maps.event.trigger(ticketMachineMarker, 'click')">So where can I buy a ticket?</a></p>
+            <p>You just tried to touch on, but your myki is running on empty.</p>
+            <p>Bail out at stop <span id="originName"></span>, before the Metcops catch you!</p>
+            <p><a href="#" onclick="google.maps.event.trigger(ticketMachineMarker, 'click')">So where can I top up?</a></p>
         </div></div>
         <div id="ticketMachineContent"><div class="infoWindow">
             <h1>Buying a ticket</h1>
-            <p>Unfortunatly because you can't buy a ticket on the tram, you'll have to visit your nearest myki retailer: <span id="ticketMachineName"></span>.</p>
+            <p>Because you can't buy a ticket on the tram, you'll have to visit your nearest myki retailer: <span id="ticketMachineName"></span>.</p>
             <p>It's only <strong id="ticketDistance"></strong> down the road, which is a <strong id="ticketDuration"></strong> walk.</p>
-            <p><a href="#" onclick="google.maps.event.trigger(tramWithTicketMarker, 'click')">So - back to the tram with my new ticket!</a></p>
+            <p><a href="#" onclick="google.maps.event.trigger(tramWithTicketMarker, 'click')">So - back to the tram!</a></p>
         </div></div>
         <div id="tramWithTicketContent"><div class="infoWindow">
             <h1>Back to the tram</h1>
-            <p>Now that you have your ticket, you're ready to ride!</p>
+            <p>Now that you've topped up your myki, you can jump back on the tram!</p>
             <p>Your nearest tram stop is <span id="tramName"></span> - <strong id="tramDistance"></strong> down the road, which is a <strong id="tramDuration"></strong> walk.</p>
             <p><a href="#" onclick="displayFinalLightbox()">What a waste!</a></p>
         </div></div>    
