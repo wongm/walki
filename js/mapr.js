@@ -90,8 +90,7 @@ function loadMap(xhr, stopResults) {
         nearestDuration = new Object();
         nearestDuration.value = 0;
     }
-        
-  
+    
     var requestMyki = {
         origin:originLatlng,
         destination:tramWithTicketLatlng,
@@ -125,7 +124,7 @@ function loadMap(xhr, stopResults) {
             }
             
             google.maps.event.addListener(originMarker, 'click', function() {
-                infoWindow.setContent(document.getElementById('originName').innerHTML);
+                infoWindow.setContent(document.getElementById('originContent').innerHTML);
                 infoWindow.open(map, this);
             });
             
