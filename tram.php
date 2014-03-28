@@ -44,7 +44,7 @@ global $config;
   <body>
     <div data-role="page" id="tram" class="map-page" data-theme="b">
         <div data-role="header">
-            <a href="jquery.html" data-role="button" data-icon="carat-l">Back</a>
+            <a href="." data-role="button" data-icon="carat-l">Back</a>
             <h1>You're on a tram</h1>
         </div>
         

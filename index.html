@@ -88,7 +88,7 @@
 				switch (type) {
 					case 'home':
 					case 'tram':
-						var url = type + '.html?' + pos.coords.latitude + ',' + pos.coords.longitude;
+						var url = type + '.php?lat=' + pos.coords.latitude + '&long=' + pos.coords.longitude;
 						window.location.href = url;	
 						break;
 				}
