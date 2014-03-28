@@ -72,16 +72,14 @@
  
         <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
-        <script>
-        	$('#home').bind('click', checkPosition);
-        	$('#tram').bind('click', checkPosition);
-        	
+    	<script>
         	function checkPosition(evt) {
 				if(navigator.geolocation) {
 					navigator.geolocation.getCurrentPosition( function(pos) { showPosition(pos, evt.target.id) } );
 				} else {
 					alert("Geolocation is not supported by this browser.");
 				}
+				return false;
 			};
 			
 			function showPosition(pos, type) {
@@ -89,10 +87,15 @@
 					case 'home':
 					case 'tram':
 						var url = type + '.php?lat=' + pos.coords.latitude + '&long=' + pos.coords.longitude;
-						window.location.href = url;	
+						window.location.href = url;
 						break;
 				}
 			}
+			
+        	$( document ).ready(function() {
+        	    $('#home').bind('click', checkPosition);
+        	    $('#tram').bind('click', checkPosition);
+    	    });
         </script>
     </body>
 </html>

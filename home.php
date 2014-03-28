@@ -44,7 +44,7 @@ global $config;
   <body>
     <div data-role="page" id="home" class="map-page" data-theme="b">
         <div data-role="header">
-            <a href="." data-role="button" data-icon="carat-l">Back</a>
+            <a href="." data-rel="back" data-role="button" data-icon="carat-l">Back</a>
             <h1>You're at home</h1>
         </div><!-- /header -->
         
