@@ -50,6 +50,30 @@ global $config;
         
         <div data-role="content" id="content">
             <div id="map-canvas" style="height:100%"></div>
+            <div style="display:none">
+                <div id="originContent"><div class="infoWindow">
+                    <h1>Welcome!</h1>
+                    <p>You're currently at <span id="originLat"></span>, <span id="originLng"></span></p>
+                    <p><a href="#" data-role="button" onclick="google.maps.event.trigger(nearestTramMarker, 'click')">Which way to the tram stop?</a></p>
+                </div></div>
+                <div id="nearestTramContent"><div class="infoWindow">
+                    <h1>Your nearest tram stop</h1>
+                    <p><span id="nearestName"></span> is your nearest tram stop - it's only <strong id="nearestDistance"></strong> away, which is a <strong id="nearestDuration"></strong> walk down the street.</p>
+                    <p><a href="#" data-role="button" onclick="google.maps.event.trigger(ticketMachineMarker, 'click')">So where can I buy a ticket?</a></p>
+                </div></div>
+                <div id="ticketMachineContent"><div class="infoWindow">
+                    <h1>Buying a ticket</h1>
+                    <p>Unfortunatly because you can't buy a ticket on the tram, you'll have to visit your nearest myki retailer: <span id="ticketMachineName"></span>.</p>
+                    <p>It's only <strong id="ticketDistance"></strong> down the road, which is a <strong id="ticketDuration"></strong> walk.</p>
+                    <p><a href="#" data-role="button" onclick="google.maps.event.trigger(tramWithTicketMarker, 'click')">So - back to the tram with my new ticket!</a></p>
+                </div></div>
+                <div id="tramWithTicketContent"><div class="infoWindow">
+                    <h1>Back to the tram</h1>
+                    <p>Now that you have your ticket, you're ready to ride!</p>
+                    <p>Your nearest tram stop is <span id="tramName"></span> - <strong id="tramDistance"></strong> down the road, which is a <strong id="tramDuration"></strong> walk.</p>
+                    <p><a href="#" data-role="button" onclick="displayFinalLightbox()">What a waste!</a></p>
+                </div></div>    
+            </div>
         </div>
         
         <div data-role="footer" data-position="fixed">
@@ -66,32 +90,7 @@ global $config;
     </div>
     
     <div id="fade" class="black_overlay"></div>
-    
-    <div style="display:none">
-        <div id="originContent"><div class="infoWindow">
-            <h1>Welcome!</h1>
-            <p>You're currently at <span id="originLat"></span>, <span id="originLng"></span></p>
-            <p><a href="#" onclick="google.maps.event.trigger(nearestTramMarker, 'click')">Which way to the tram stop?</a></p>
-        </div></div>
-        <div id="nearestTramContent"><div class="infoWindow">
-            <h1>Your nearest tram stop</h1>
-            <p><span id="nearestName"></span> is your nearest tram stop - it's only <strong id="nearestDistance"></strong> away, which is a <strong id="nearestDuration"></strong> walk down the street.</p>
-            <p><a href="#" onclick="google.maps.event.trigger(ticketMachineMarker, 'click')">So where can I buy a ticket?</a></p>
-        </div></div>
-        <div id="ticketMachineContent"><div class="infoWindow">
-            <h1>Buying a ticket</h1>
-            <p>Unfortunatly because you can't buy a ticket on the tram, you'll have to visit your nearest myki retailer: <span id="ticketMachineName"></span>.</p>
-            <p>It's only <strong id="ticketDistance"></strong> down the road, which is a <strong id="ticketDuration"></strong> walk.</p>
-            <p><a href="#" onclick="google.maps.event.trigger(tramWithTicketMarker, 'click')">So - back to the tram with my new ticket!</a></p>
-        </div></div>
-        <div id="tramWithTicketContent"><div class="infoWindow">
-            <h1>Back to the tram</h1>
-            <p>Now that you have your ticket, you're ready to ride!</p>
-            <p>Your nearest tram stop is <span id="tramName"></span> - <strong id="tramDistance"></strong> down the road, which is a <strong id="tramDuration"></strong> walk.</p>
-            <p><a href="#" onclick="displayFinalLightbox()">What a waste!</a></p>
-        </div></div>    
-    </div>
-    
+        
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
   </body>

@@ -10,65 +10,70 @@
         <div data-role="page" id="first" data-theme="a">
             <div data-role="header" data-position="fixed">
                 <h1>walki</h1>
-            </div><!-- /header -->
+            </div>
  
             <div data-role="content">
             	<p>How much time is myki stealing from you?</p>
                 <p>You can't buy a ticket on a tram, or top you your myki. So where can you?</p>
                 
-                <ul data-role="listview" data-inset="true" data-theme="b" data-divider-theme="b">
+                <ul data-role="listview" data-inset="true" data-theme="b">
 					<li><a href="#" id="home" data-icon="carat-r" data-iconpos="right">I'm at home</a></li>
                 	<li><a href="#" id="tram" data-icon="carat-r" data-iconpos="right">I'm on a tram</a></li>
-                	<li><a href="#about" data-transition="fade" data-icon="carat-r" data-iconpos="right">About</a></li>
-                </ul>	
-            </div><!-- /content -->
+                </ul>
+                	
+                <ul data-role="listview" data-inset="true" data-theme="b">
+                	<li><a href="#why" data-transition="fade" data-icon="carat-r" data-iconpos="right">Why can't I buy a ticket?</a></li>
+                	<li><a href="#about" data-transition="fade" data-icon="carat-r" data-iconpos="right">About this app</a></li>
+                </ul>
+            </div>
  
             <div data-role="footer" data-position="fixed">
                 <h4>Page Footer 1</h4>
-            </div><!-- /footer -->
-        </div><!-- /page -->
+            </div>
+        </div>
  
-        <div data-role="page" id="home" data-theme="b">
-            <div data-role="header" data-position="fixed"  data-add-back-btn="true">
-                <h1>You're at home</h1>
-            </div><!-- /header -->
+        <div data-role="page" id="why" data-theme="a">
+            <div data-role="header" data-position="fixed">
+                <a href="." data-rel="back" data-role="button" data-icon="carat-l">Back</a>
+                <h1>Why can't I buy a ticket?</h1>
+            </div>
  
             <div data-role="content">
-                <p>Page content goes here.</p>
-            </div><!-- /content -->
+                <p>An integral part of the original Myki system was ticket machines onboard trams - they would have allowed passengers to top up their myki, as well as giving them the option to purchase a single use ticket if they didn't hold a myki.</p>
+                <p>A single ticket machine was installed onboard a Melbourne tram in early 2009 as part of the myki field trial program, with it remaining in place but not in use until at least November 2011.</p>
+                <p><img src="http://railgallery.wongm.com/cache/myki/E111_9863_595.jpg" title="Myki ticket machine onboard tram B2.2012, install as part of the field trial program." /></p>
+                <p>Short term tickets were a cardboard smartcard which entitled the holder to 2 hour of travel, for a cost slightly more than the normal fare charged to standard myki users.</p>
+                <p>Sales of these tickets commenced in 2009 when Myki went live in Geelong, and they continue to be sold onboard buses in Geelong, Ballarat, Bendigo, Seymour and the Latrobe Valley until 2013.</p>
+                <p>In Melbourne the sale of short term tickets was never enabled, with the option to do so being disabled for all myki machines located in the city.</p>
+                <p>The rollout of short term fares and myki machines onboard trams was cancelled by the Baillieu Government in June 2011, acting on advice contained in a secret report by consultanting firm Deloitte.<p>
+                <p>One reason given for the reason for the withdrawl of short term ticket was due to the cards costing $0.40 cents each to manufacture – making up almost half of the $0.90 charged for a concession bus fare in Geelong!</p>
+                <p>Yarra Trams said that the change would reduce the tram company's costs, boost space for passengers and reduce fare evasion issues by eliminating a key reason given for not buying a ticket.</p>
+                <p>Everyone else says the cancellation of short term tickets and onboard top ups make it much more difficult for passengers who only use trams to pay their fare.</p>
+            </div>
  
             <div data-role="footer" data-position="fixed">
-                <h4>Page Footer 2</h4>
-            </div><!-- /footer -->
-        </div><!-- /page -->
+                <h4>walki</h4>
+            </div>
+        </div>
         
-        <div data-role="page" id="tram" data-theme="b">
-            <div data-role="header" data-position="fixed"  data-add-back-btn="true">
-                <h1>You're on a tram</h1>
-            </div><!-- /header -->
+        <div data-role="page" id="about" data-theme="a">
+            <div data-role="header" data-position="fixed">
+                <a href="." data-rel="back" data-role="button" data-icon="carat-l">Back</a>
+                <h1>About this app</h1>
+            </div>
  
             <div data-role="content">
-                <p>Page content goes here.</p>
-            </div><!-- /content -->
+                <p>Back in March 2014 Public Transport Victoria finally opened up the API which powers their mobile apps, so I decided to have a play around with it.</p>
+                <p>With the mobile landscape already littered with hundreds of different trip planning apps, I decided to build something slightly different, with this being the end result.</p>
+                <p>In the backend I'm using PHP to gather tram stop and myki retailer locations through calls to the PTV API, with the resulting data being mashed around in Javascript until they are drawn out on a pretty map.</p>
+                <p>The frontend code is all jQuery Mobile, with the maps being drawn using the Google Maps JavaScript API v3.</p>
+                <p>Marcus Wong (<a href="http://wongm.com">http://wongm.com</a>)</p>
+            </div>
  
             <div data-role="footer" data-position="fixed">
-                <h4>Page Footer 2</h4>
-            </div><!-- /footer -->
-        </div><!-- /page -->
-        
-        <div data-role="page" id="about" data-theme="b">
-            <div data-role="header" data-position="fixed"  data-add-back-btn="true">
-                <h1>About</h1>
-            </div><!-- /header -->
- 
-            <div data-role="content">
-                <p>Page content goes here.</p>
-            </div><!-- /content -->
- 
-            <div data-role="footer" data-position="fixed">
-                <h4>Page Footer 2</h4>
-            </div><!-- /footer -->
-        </div><!-- /page -->
+                <h4>walki</h4>
+            </div>
+        </div>
  
         <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>

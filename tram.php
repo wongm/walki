@@ -50,6 +50,26 @@ global $config;
         
         <div data-role="content" id="content">
             <div id="map-canvas" style="height:100%"></div>
+            <div style="display:none">
+                <div id="originContent"><div class="infoWindow">
+                    <h1>Welcome!</h1>
+                    <p>You just tried to touch on, but your myki is running on empty.</p>
+                    <p>Bail out at stop <span id="originName"></span>, before the Metcops catch you!</p>
+                    <p><a href="#" data-role="button" onclick="google.maps.event.trigger(ticketMachineMarker, 'click')">So where can I top up?</a></p>
+                </div></div>
+                <div id="ticketMachineContent"><div class="infoWindow">
+                    <h1>Buying a ticket</h1>
+                    <p>Because you can't buy a ticket on the tram, you'll have to visit your nearest myki retailer: <span id="ticketMachineName"></span>.</p>
+                    <p>It's only <strong id="ticketDistance"></strong> down the road, which is a <strong id="ticketDuration"></strong> walk.</p>
+                    <p><a href="#" data-role="button" onclick="google.maps.event.trigger(tramWithTicketMarker, 'click')">So - back to the tram!</a></p>
+                </div></div>
+                <div id="tramWithTicketContent"><div class="infoWindow">
+                    <h1>Back to the tram</h1>
+                    <p>Now that you've topped up your myki, you can jump back on the tram!</p>
+                    <p>Your nearest tram stop is <span id="tramName"></span> - <strong id="tramDistance"></strong> down the road, which is a <strong id="tramDuration"></strong> walk.</p>
+                    <p><a href="#" data-role="button" onclick="displayFinalLightbox()">What a waste!</a></p>
+                </div></div>    
+            </div>
         </div>
         
         <div data-role="footer" data-position="fixed">
@@ -65,28 +85,7 @@ global $config;
     </div>
     
     <div id="fade" class="black_overlay"></div>
-    
-    <div style="display:none">
-        <div id="originContent"><div class="infoWindow">
-            <h1>Welcome!</h1>
-            <p>You just tried to touch on, but your myki is running on empty.</p>
-            <p>Bail out at stop <span id="originName"></span>, before the Metcops catch you!</p>
-            <p><a href="#" onclick="google.maps.event.trigger(ticketMachineMarker, 'click')">So where can I top up?</a></p>
-        </div></div>
-        <div id="ticketMachineContent"><div class="infoWindow">
-            <h1>Buying a ticket</h1>
-            <p>Because you can't buy a ticket on the tram, you'll have to visit your nearest myki retailer: <span id="ticketMachineName"></span>.</p>
-            <p>It's only <strong id="ticketDistance"></strong> down the road, which is a <strong id="ticketDuration"></strong> walk.</p>
-            <p><a href="#" onclick="google.maps.event.trigger(tramWithTicketMarker, 'click')">So - back to the tram!</a></p>
-        </div></div>
-        <div id="tramWithTicketContent"><div class="infoWindow">
-            <h1>Back to the tram</h1>
-            <p>Now that you've topped up your myki, you can jump back on the tram!</p>
-            <p>Your nearest tram stop is <span id="tramName"></span> - <strong id="tramDistance"></strong> down the road, which is a <strong id="tramDuration"></strong> walk.</p>
-            <p><a href="#" onclick="displayFinalLightbox()">What a waste!</a></p>
-        </div></div>    
-    </div>
-    
+        
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
   </body>
