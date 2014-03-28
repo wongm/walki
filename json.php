@@ -65,7 +65,7 @@ if ($locationNearestTram != null)
                 "lng" => (double)$originLong,
             );
             $nearestTram = array(
-                "content" => $contentNearestTram,
+                "name" => $contentNearestTram,
                 "lat" => $locationNearestTram->lat,
                 "lng" => $locationNearestTram->lon,
             );
