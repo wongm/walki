@@ -10,6 +10,7 @@ function displayFailure(xhr, result) {
 }
 
 function loadMap(xhr, stopResults) {
+    $.mobile.loading('hide');
     
     if (stopResults.error) {
         displayFailure();

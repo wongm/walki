@@ -1,6 +1,16 @@
 html { height: 100%; font-family: Roboto,Arial,sans-serif; }
 body { height: 100%; margin: 0; padding: 0 }
-#map-canvas, #map-canvas2 { height: 100% }
+#content {
+    padding: 0;
+    position : absolute !important; 
+    top : 40px !important;  
+    right : 0; 
+    bottom : 40px !important;  
+    left : 0 !important;     
+}
+#map-canvas {
+    //background: url('../images/spinner.gif') no-repeat center center;
+}
 .infoWindow h1 { 
     font-size: 20px !important;
 }
@@ -8,6 +18,8 @@ body { height: 100%; margin: 0; padding: 0 }
     min-height: 100px; 
     max-width: 400px;
     text-align: center;
+	color: #333;
+    text-shadow: 0 1px 0 #f3f3f3;
 }
 .infoWindow p, .infoWindow span { 
 	font-size: 15px !important;
