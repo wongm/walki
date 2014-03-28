@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+    <head>
+       <title>walki</title>
+       <meta name="viewport" content="initial-scale=1, user-scalable=no, width=device-width">
+       <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.css">
+    </head>
+ 
+    <body>
+        <div data-role="page" id="first" data-theme="a">
+            <div data-role="header" data-position="fixed">
+                <h1>walki</h1>
+            </div><!-- /header -->
+ 
+            <div data-role="content">
+            	<p>How much time is myki stealing from you?</p>
+                <p>You can't buy a ticket on a tram, or top you your myki. So where can you?</p>
+                
+                <ul data-role="listview" data-inset="true" data-theme="b" data-divider-theme="b">
+					<li><a href="#" id="home" data-icon="carat-r" data-iconpos="right">I'm at home</a></li>
+                	<li><a href="#" id="tram" data-icon="carat-r" data-iconpos="right">I'm on a tram</a></li>
+                	<li><a href="#about" data-transition="fade" data-icon="carat-r" data-iconpos="right">About</a></li>
+                </ul>	
+            </div><!-- /content -->
+ 
+            <div data-role="footer" data-position="fixed">
+                <h4>Page Footer 1</h4>
+            </div><!-- /footer -->
+        </div><!-- /page -->
+ 
+        <div data-role="page" id="home" data-theme="b">
+            <div data-role="header" data-position="fixed"  data-add-back-btn="true">
+                <h1>You're at home</h1>
+            </div><!-- /header -->
+ 
+            <div data-role="content">
+                <p>Page content goes here.</p>
+            </div><!-- /content -->
+ 
+            <div data-role="footer" data-position="fixed">
+                <h4>Page Footer 2</h4>
+            </div><!-- /footer -->
+        </div><!-- /page -->
+        
+        <div data-role="page" id="tram" data-theme="b">
+            <div data-role="header" data-position="fixed"  data-add-back-btn="true">
+                <h1>You're on a tram</h1>
+            </div><!-- /header -->
+ 
+            <div data-role="content">
+                <p>Page content goes here.</p>
+            </div><!-- /content -->
+ 
+            <div data-role="footer" data-position="fixed">
+                <h4>Page Footer 2</h4>
+            </div><!-- /footer -->
+        </div><!-- /page -->
+        
+        <div data-role="page" id="about" data-theme="b">
+            <div data-role="header" data-position="fixed"  data-add-back-btn="true">
+                <h1>About</h1>
+            </div><!-- /header -->
+ 
+            <div data-role="content">
+                <p>Page content goes here.</p>
+            </div><!-- /content -->
+ 
+            <div data-role="footer" data-position="fixed">
+                <h4>Page Footer 2</h4>
+            </div><!-- /footer -->
+        </div><!-- /page -->
+ 
+        <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
+        <script>
+        	$('#home').bind('click', checkPosition);
+        	$('#tram').bind('click', checkPosition);
+        	
+        	function checkPosition(evt) {
+				if(navigator.geolocation) {
+					navigator.geolocation.getCurrentPosition( function(pos) { showPosition(pos, evt.target.id) } );
+				} else {
+					alert("Geolocation is not supported by this browser.");
+				}
+			};
+			
+			function showPosition(pos, type) {
+				switch (type) {
+					case 'home':
+					case 'tram':
+						var url = type + '.html?' + pos.coords.latitude + ',' + pos.coords.longitude;
+						window.location.href = url;	
+						break;
+				}
+			}
+        </script>
+    </body>
+</html>
