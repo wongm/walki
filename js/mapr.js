@@ -242,19 +242,9 @@ function setupFinalLightboxContent()
     }
 }
 
-function displayFinalLightbox()
-{
-    infoWindow.close();
-    document.getElementById('light').style.display='block';
-    document.getElementById('fade').style.display='block';
-    
-    document.getElementById('fade').addEventListener('click', closeFinalLightbox);
-}
-
 function closeFinalLightbox()
 {
-    document.getElementById('light').style.display='none';
-    document.getElementById('fade').style.display='none';
+    infoWindow.close();
 }
 
 function renderDirections(result) {

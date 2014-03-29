@@ -57,12 +57,19 @@ global $config;
                     <h1>Back to the tram</h1>
                     <p>Now that you've topped up your myki, you can jump back on the tram!</p>
                     <p>Your nearest tram stop is <span id="tramName"></span> - <strong id="tramDistance"></strong> down the road, which is a <strong id="tramDuration"></strong> walk.</p>
-                    <p><a href="#" data-role="button" onclick="displayFinalLightbox()">What a waste!</a></p>
+                    <p><a href="#popupFinal" data-role="button" data-rel="popup" data-position-to="window" data-transition="fade" onclick="closeFinalLightbox()">What a waste!</a></p>
                 </div></div>
                 <div id="errorContent"><div class="infoWindow">
                     <h1>No trams?</h1>
                     <p>Sorry - there aren't any tram stops near your current location!</p>
                 </div></div>  
+            </div>
+            <div data-role="popup" id="popupFinal" data-overlay-theme="a" data-theme="d" data-corners="false">
+				<a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a><h1>Sheesh!</h1>
+                <p>Quite the journey to top up your myki, wasn't it?</p>
+                <p>You've just had to had to walk <strong id="ticketDistanceLB"></strong> to a myki retailer, and then <strong id="tramDistanceLB"></strong> back to a tram.</p>
+                <p>All up, that is an extra <strong id="extraDistanceLB"></strong> walk - or <strong id="extraTimeLB"></strong> you had to waste because you can't top up on your myki on a tram.</p>
+                <a href="." data-role="button" data-icon="home">Home</a>
             </div>
         </div>
         
@@ -71,15 +78,6 @@ global $config;
         </div>
     </div>
     
-    <div id="light" class="white_content">
-        <h1>Sheesh!</h1>
-        <p>Quite the journey to top up your myki, wasn't it?</p>
-        <p>You've just had to had to walk <strong id="ticketDistanceLB"></strong> to a myki retailer, and then <strong id="tramDistanceLB"></strong> back to a tram.</p>
-        <p>All up, that is an extra <strong id="extraDistanceLB"></strong> walk - or <strong id="extraTimeLB"></strong> you had to waste because you can't top up on your myki on a tram.</p>
-    </div>
-    
-    <div id="fade" class="black_overlay"></div>
-        
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
   </body>

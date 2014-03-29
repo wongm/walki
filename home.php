@@ -36,7 +36,7 @@ global $config;
         <div data-role="header">
             <a href="." data-rel="back" data-role="button" data-icon="carat-l">Back</a>
             <h1>You're at home</h1>
-        </div><!-- /header -->
+        </div>
         
         <div data-role="content" id="content">
             <div id="map-canvas" style="height:100%"></div>
@@ -61,29 +61,28 @@ global $config;
                     <h1>Back to the tram</h1>
                     <p>Now that you have your ticket, you're ready to ride!</p>
                     <p>Your nearest tram stop is <span id="tramName"></span> - <strong id="tramDistance"></strong> down the road, which is a <strong id="tramDuration"></strong> walk.</p>
-                    <p><a href="#" data-role="button" onclick="displayFinalLightbox()">What a waste!</a></p>
+                    <p><a href="#popupFinal" data-role="button" data-rel="popup" data-position-to="window" data-transition="fade" onclick="closeFinalLightbox()">What a waste!</a></p>
                 </div></div>
                 <div id="errorContent"><div class="infoWindow">
                     <h1>No trams?</h1>
                     <p>Sorry - there aren't any tram stops near your current location!</p>
                 </div></div>
             </div>
+            <div data-role="popup" id="popupFinal" data-overlay-theme="a" data-theme="d" data-corners="false">
+				<a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+                <h1>Sheesh!</h1>
+                <p>Quite the journey to buy a ticket, wasn't it?</p>
+                <p>If you could buy a ticket on the tram, it would have taken you only <strong id="nearestDurationLB"></strong> to walk the <strong id="nearestDistanceLB"></strong> to your nearest stop and board a tram.</p>
+                <p>Instead, you had to walk <strong id="ticketDistanceLB"></strong> to a myki retailer, and then <strong id="tramDistanceLB"></strong> back to the tram stop.</p>
+                <p>All up, that is an extra <strong id="extraDistanceLB"></strong> walk - or <strong id="extraTimeLB"></strong> you had to waste because of a lack of onboard ticket sales.</p>
+                <a href="." data-role="button" data-icon="home">Home</a>
+			</div>
         </div>
         
         <div data-role="footer" data-position="fixed">
             <h4>Test All The Things</h4>
-        </div><!-- /footer -->
-    </div><!-- /page -->
-        
-    <div id="light" class="white_content">
-        <h1>Sheesh!</h1>
-        <p>Quite the journey to buy a ticket, wasn't it?</p>
-        <p>If you could buy a ticket on the tram, it would have taken you only <strong id="nearestDurationLB"></strong> to walk the <strong id="nearestDistanceLB"></strong> to your nearest stop and board a tram.</p>
-        <p>Instead, you had to walk <strong id="ticketDistanceLB"></strong> to a myki retailer, and then <strong id="tramDistanceLB"></strong> back to the tram stop.</p>
-        <p>All up, that is an extra <strong id="extraDistanceLB"></strong> walk - or <strong id="extraTimeLB"></strong> you had to waste because of a lack of onboard ticket sales.</p>
+        </div>
     </div>
-    
-    <div id="fade" class="black_overlay"></div>
         
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
