@@ -5,7 +5,7 @@ include_once("util.php");
 $metresMaxWalkingDistance = 1500;
 
 $originLat = $_GET["lat"];
-$originLong = $_GET["long"];
+$originLong = $_GET["lng"];
 $type = $_GET["type"];
 
 if (strlen($originLat) < 1)
@@ -44,7 +44,7 @@ if ($locationNearestTram != null)
     $contentTicketMachine = "$locationTicketMachine->business_name at " . trim($locationTicketMachine->location_name) . ", $locationTicketMachine->suburb";
 
     // where is the nearest tram stop after the ticket machine?
-    $boundsTicketMachine = getOffsetLocationBounds($locationTicketMachine->lat, $locationTicketMachine->lon, $metresMaxWalkingDistance);
+    $boundsTicketMachine = getOffsetLocationBounds($locationTicketMachine->lat, $locationTicketMachine->lon, $metresMaxWalkingDistance + 1000);
     $locationTramWithTicket = getNearestPOI($poiTrams, $locationTicketMachine->lat, $locationTicketMachine->lon, $boundsTicketMachine);
     $contentTramWithTicket = trim($locationTramWithTicket->location_name);
     
@@ -90,7 +90,12 @@ if ($locationNearestTram != null)
 }
 else
 {
-    $jsondata = array("error" => "No tram stops found", "code" => 1);
+    $jsondata = array(
+        "error" => "No tram stops found", 
+        "code" => 1,
+        "lat" => (double)$originLat,
+        "lng" => (double)$originLong,
+    );
 }
     
 header("Content-Type: application/json");

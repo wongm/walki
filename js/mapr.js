@@ -5,22 +5,80 @@ var originContent, nearestTramContent, ticketMachineContent, tramWithTicketConte
 var originMarker, nearestTramMarker, ticketMachineMarker, tramWithTicketMarker;
 var nearestDistance, ticketDistance, tramDistance, nearestDuration, ticketDuration, tramDuration;
 
-function displayFailure(xhr, result) {
-    alert('fail');
+function checkPosition(evt) {
+	if(navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition( 
+		    function(pos) { showPosition(pos, evt.target.id) }, 
+		    function() { positionDenied(evt.target.id) } 
+		);
+	} else {
+		positionDenied(evt.target.id);
+	}
+	return false;
 }
 
-function loadMap(xhr, stopResults) {
+function showPosition(pos, type) {
+	switch (type) {
+		case 'home':
+		case 'tram':
+			window.location.href = type + '.php?lat=' + pos.coords.latitude + '&long=' + pos.coords.longitude;
+			return;
+	}
+}
+
+function positionDenied(type) {
+	window.location.href = type + '.php';
+	return;
+}
+
+function hardLoadLink(evt) {
+	window.location.href = evt.target.href;
+	return;
+}
+
+function initialiseMap(lat, lng, type) {     
+    $.mobile.loading('show');
+    var url = 'json.php?lat=' + lat + '&lng=' + lng + '&type=' + type;  
+    $.ajax(url, {
+        success: displayMap,
+        failure: displayFailure,
+        type: 'GET',
+        dataType: 'json',
+    });
+}    
+
+function displayFailure(stopResults) {
+    $.mobile.loading('hide');
+    console.log('displayFailure');
+    
+    var originLatlng = new google.maps.LatLng(stopResults.lat, stopResults.lng);
+    map = new google.maps.Map(document.getElementById('map-canvas'));
+    
+    originMarker = new google.maps.Marker({
+        position: originLatlng,
+        map: map,
+        icon: 'http://maps.google.com/mapfiles/kml/pal3/icon20.png',
+        title: 'You are here'
+    });
+    
+    google.maps.event.addListener(originMarker, 'click', function() {
+        infoWindow.open(map, this);
+    });
+    
+    map.setCenter(originLatlng);
+    map.setZoom(15);
+    
+    infoWindow.setContent(document.getElementById('errorContent').innerHTML);
+    infoWindow.open(map, originMarker);
+}
+
+function displayMap(stopResults) {
     $.mobile.loading('hide');
     
     if (stopResults.error) {
-        displayFailure();
+        displayFailure(stopResults);
+        return;
     }
-        
-    var mapOptions = {
-        center: originLatlng,
-    };
-    
-    map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
     
     var bounds = new google.maps.LatLngBounds();
     var originIcon;
@@ -29,6 +87,11 @@ function loadMap(xhr, stopResults) {
     var ticketMachineLatlng = new google.maps.LatLng(stopResults.ticketMachine.lat, stopResults.ticketMachine.lng);
     var tramWithTicketLatlng = new google.maps.LatLng(stopResults.tramWithTicket.lat, stopResults.tramWithTicket.lng);
     var nearestTramLatlng = originLatlng;
+    
+    var mapOptions = {
+        center: originLatlng,
+    };
+    map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
     
     switch (stopResults.type)
     {

@@ -26,19 +26,9 @@ global $config;
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.css">
     <link rel="stylesheet" href="css/style.css" />
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=<?php echo $config['googleapi'] ?>&sensor=false"></script>
-    <script type="text/javascript" src="js/core.js"></script>
     <script type="text/javascript" src="js/mapr.js"></script>
     <script type="text/javascript">
-        function initialize() {
-            $.mobile.loading('show');
-            var url = 'json.php?lat=<?php echo $originLat; ?>&long=<?php echo $originLong; ?>&type=home';            
-            ajax(url, {
-                onSuccess: loadMap,
-                onFailure: displayFailure,
-                responseType: 'json',
-            });
-        }    
-        google.maps.event.addDomListener(window, 'load', initialize);
+        google.maps.event.addDomListener(window, 'load', function() { initialiseMap(<?php echo $originLat; ?>, <?php echo $originLong; ?>, 'home'); } );
     </script>
   </head>
   <body>
@@ -72,7 +62,11 @@ global $config;
                     <p>Now that you have your ticket, you're ready to ride!</p>
                     <p>Your nearest tram stop is <span id="tramName"></span> - <strong id="tramDistance"></strong> down the road, which is a <strong id="tramDuration"></strong> walk.</p>
                     <p><a href="#" data-role="button" onclick="displayFinalLightbox()">What a waste!</a></p>
-                </div></div>    
+                </div></div>
+                <div id="errorContent"><div class="infoWindow">
+                    <h1>No trams?</h1>
+                    <p>Sorry - there aren't any tram stops near your current location!</p>
+                </div></div>
             </div>
         </div>
         
