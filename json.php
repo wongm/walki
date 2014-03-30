@@ -4,17 +4,18 @@ include_once("util.php");
 
 $metresMaxWalkingDistance = 1500;
 
-$originLat = $_GET["lat"];
-$originLong = $_GET["lng"];
+$originLat = (double) $_GET["lat"];
+$originLong = (double) $_GET["lng"];
 $type = $_GET["type"];
 
-if (strlen($originLat) < 1)
+// default to the middle of Melbourne!
+if ($originLat == 0 || !is_numeric($originLat))
 {
-    $originLat = -37.7796654;
+    $originLat = -37.814107;
 }
-if (strlen($originLong) < 1)
+if ($originLong == 0 || !is_numeric($originLong))
 {
-    $originLong = 144.917969;
+    $originLong = 144.96328;
 }
 
 switch ($type)

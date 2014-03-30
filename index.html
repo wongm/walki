@@ -13,17 +13,17 @@
             </div>
  
             <div data-role="content">
-            	<p>How much time is myki stealing from you?</p>
+                <p>How much time is myki stealing from you?</p>
                 <p>You can't buy a ticket on a tram, or top you your myki. So where can you?</p>
                 
-                <ul data-role="listview" data-inset="true" data-theme="b">
-					<li><a href="#" id="home" data-icon="carat-r" data-iconpos="right">I'm at home</a></li>
-                	<li><a href="#" id="tram" data-icon="carat-r" data-iconpos="right">I'm on a tram</a></li>
+                <ul data-role="listview" data-inset="true" data-theme="a">
+                    <li><a href="#" id="home" data-icon="carat-r" data-iconpos="right">I'm at home</a></li>
+                    <li><a href="#" id="tram" data-icon="carat-r" data-iconpos="right">I'm on a tram</a></li>
                 </ul>
-                <ul data-role="listview" data-inset="true" data-theme="b">
-                	<li><a href="#examples" data-transition="fade" data-icon="carat-r" data-iconpos="right">Some examples</a></li>
-                	<li><a href="#why" data-transition="fade" data-icon="carat-r" data-iconpos="right">Why can't I buy a ticket?</a></li>
-                	<li><a href="#about" data-transition="fade" data-icon="carat-r" data-iconpos="right">About this app</a></li>
+                <ul data-role="listview" data-inset="true" data-theme="a">
+                    <li><a href="#examples" data-transition="fade" data-icon="carat-r" data-iconpos="right">Some examples</a></li>
+                    <li><a href="#why" data-transition="fade" data-icon="carat-r" data-iconpos="right">Why can't I buy a ticket?</a></li>
+                    <li><a href="#about" data-transition="fade" data-icon="carat-r" data-iconpos="right">About this app</a></li>
                 </ul>
             </div>
  
@@ -34,22 +34,22 @@
  
         <div data-role="page" id="examples" data-theme="a">
             <div data-role="header" data-position="fixed">
-                <a href="." data-rel="back" data-role="button" data-icon="carat-l">Back</a>
+                <a href="/" data-rel="back" data-role="button" data-icon="carat-l">Back</a>
                 <h1>Some examples</h1>
             </div>
             
             <div data-role="content" id="examplelinks">
                 <ul data-role="listview" data-inset="true" data-theme="a">
                     <li data-role="list-divider" role="heading">At home</li>
-                	<li><a href="home.php?lat=-37.8196654&long=145.057969" data-icon="carat-r" data-iconpos="right">Candice in Camberwell</a></li>
-                	<li><a href="home.php?lat=-37.8196654&long=145.017969" data-icon="carat-r" data-iconpos="right">Harrold in Hawthorn</a></li>
-                	<li><a href="home.php?lat=-37.716654&long=145.017969" data-icon="carat-r" data-iconpos="right">Ron in Reservoir</a></li>
+                    <li><a href="/home/-37.8196654,145.057969" data-icon="carat-r" data-iconpos="right">Candice in Camberwell</a></li>
+                    <li><a href="/home/-37.8196654,145.017969" data-icon="carat-r" data-iconpos="right">Harrold in Hawthorn</a></li>
+                    <li><a href="/home/-37.716654,145.017969" data-icon="carat-r" data-iconpos="right">Ron in Reservoir</a></li>
                 </ul>
                 <ul data-role="listview" data-inset="true" data-theme="a">
                     <li data-role="list-divider" role="heading">On a tram</li>
-                	<li><a href="tram.php?lat=-37.716654&long=145.017969" data-icon="carat-r" data-iconpos="right">Sue on route 86</a></li>
-                	<li><a href="tram.php?lat=-37.736654&long=144.937969" data-icon="carat-r" data-iconpos="right">Fifi on route 55</a></li>
-                	<li><a href="tram.php?lat=-37.836654&long=144.9937969" data-icon="carat-r" data-iconpos="right">Nigel on route 79</a></li>
+                    <li><a href="/tram/-37.72528,145.0234" data-icon="carat-r" data-iconpos="right">Sue on route 86</a></li>
+                    <li><a href="/tram/-37.73941,144.945587 data-icon="carat-r" data-iconpos="right">Fifi on route 55</a></li>
+                    <li><a href="/tram/-37.8363762,144.99617" data-icon="carat-r" data-iconpos="right">Nigel on route 79</a></li>
                 </ul>
             </div>
  
@@ -60,7 +60,7 @@
  
         <div data-role="page" id="why" data-theme="a">
             <div data-role="header" data-position="fixed">
-                <a href="." data-rel="back" data-role="button" data-icon="carat-l">Back</a>
+                <a href="/" data-rel="back" data-role="button" data-icon="carat-l">Back</a>
                 <h1>Why can't I buy a ticket?</h1>
             </div>
  
@@ -84,7 +84,7 @@
         
         <div data-role="page" id="about" data-theme="a">
             <div data-role="header" data-position="fixed">
-                <a href="." data-rel="back" data-role="button" data-icon="carat-l">Back</a>
+                <a href="/" data-rel="back" data-role="button" data-icon="carat-l">Back</a>
                 <h1>About this app</h1>
             </div>
  
@@ -104,12 +104,12 @@
         <script src="js/home.js"></script>
         <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
-    	<script>
-        	$( document ).ready(function() {
-        	    $('#home').bind('click', checkPosition);
-        	    $('#tram').bind('click', checkPosition);
-        	    $('#examplelinks').find('a').bind('click', hardLoadLink);
-    	    });
+        <script>
+            $( document ).ready(function() {
+                $('#home').bind('click', checkPosition);
+                $('#tram').bind('click', checkPosition);
+                $('#examplelinks').find('a').bind('click', hardLoadLink);
+            });
         </script>
     </body>
 </html>

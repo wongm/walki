@@ -1,0 +1,6 @@
+Options +FollowSymLinks
+RewriteEngine On
+RewriteRule ^tram/(-?[0-9.]+)\,(-?[0-9.]+)$ search-tram.php?lat=$1&lng=$2 [L,QSA]
+RewriteRule ^tram/(.*)$ search-tram.php [L,QSA]
+RewriteRule ^home/(-?[0-9.]+),(-?[0-9.]+)$ search-home.php?lat=$1&lng=$2 [L,QSA]
+RewriteRule ^home/(.*)$ search-home.php [L,QSA]

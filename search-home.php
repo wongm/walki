@@ -1,32 +1,18 @@
 <?php
-
 include_once('util.php');
-
-$metresMaxWalkingDistance = 1500;
-
-$originLat = $_GET['lat'];
-$originLong = $_GET['long'];
-
-if (strlen($originLat) < 1)
-{
-    $originLat = -37.7796654;
-}
-if (strlen($originLong) < 1)
-{
-    $originLong = 144.917969;
-}
-
 global $config;
 
+$originLat = (double) $_GET['lat'];
+$originLong = (double) $_GET['lng'];
 ?>
 <!DOCTYPE html>
 <html>
   <head>
     <meta name="viewport" content="initial-scale=1, user-scalable=no, width=device-width">
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.css">
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="/css/style.css" />
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=<?php echo $config['googleapi'] ?>&sensor=false"></script>
-    <script type="text/javascript" src="js/mapr.js"></script>
+    <script type="text/javascript" src="/js/mapr.js"></script>
     <script type="text/javascript">
         google.maps.event.addDomListener(window, 'load', function() { initialiseMap(<?php echo $originLat; ?>, <?php echo $originLong; ?>, 'home'); } );
     </script>
@@ -34,7 +20,7 @@ global $config;
   <body>
     <div data-role="page" id="home" class="map-page" data-theme="b">
         <div data-role="header">
-            <a href="." data-rel="back" data-role="button" data-icon="carat-l">Back</a>
+            <a href="/" data-rel="back" data-role="button" data-icon="carat-l">Back</a>
             <h1>You're at home</h1>
         </div>
         
@@ -69,14 +55,14 @@ global $config;
                 </div></div>
             </div>
             <div data-role="popup" id="popupFinal" data-overlay-theme="a" data-theme="d" data-corners="false">
-				<a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+                <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
                 <h1>Sheesh!</h1>
                 <p>Quite the journey to buy a ticket, wasn't it?</p>
                 <p>If you could buy a ticket on the tram, it would have taken you only <strong id="nearestDurationLB"></strong> to walk the <strong id="nearestDistanceLB"></strong> to your nearest stop and board a tram.</p>
                 <p>Instead, you had to walk <strong id="ticketDistanceLB"></strong> to a myki retailer, and then <strong id="tramDistanceLB"></strong> back to the tram stop.</p>
                 <p>All up, that is an extra <strong id="extraDistanceLB"></strong> walk - or <strong id="extraTimeLB"></strong> you had to waste because of a lack of onboard ticket sales.</p>
-                <a href="." data-role="button" data-icon="home">Home</a>
-			</div>
+                <a href="/" data-role="button" data-icon="home" onclick="goHome()">Home</a>
+            </div>
         </div>
         
         <div data-role="footer" data-position="fixed">

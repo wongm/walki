@@ -7,7 +7,7 @@ var nearestDistance, ticketDistance, tramDistance, nearestDuration, ticketDurati
 
 function initialiseMap(lat, lng, type) {     
     $.mobile.loading('show');
-    var url = 'json.php?lat=' + lat + '&lng=' + lng + '&type=' + type;  
+    var url = '/json.php?lat=' + lat + '&lng=' + lng + '&type=' + type;  
     $.ajax(url, {
         success: displayMap,
         failure: displayFailure,
@@ -69,6 +69,7 @@ function displayMap(stopResults) {
             originIcon = 'http://maps.google.com/mapfiles/kml/pal3/icon56.png';
             break;
         case 'tram':
+        console.log(stopResults.current.lat + ',' + stopResults.current.lng);
             originIcon = 'http://maps.google.com/mapfiles/kml/pal3/icon20.png';
             break;
     }
@@ -245,6 +246,12 @@ function setupFinalLightboxContent()
 function closeFinalLightbox()
 {
     infoWindow.close();
+}
+
+function goHome()
+{
+    window.location.href = '/';
+    return false;
 }
 
 function renderDirections(result) {

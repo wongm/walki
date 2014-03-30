@@ -1,32 +1,18 @@
 <?php
-
 include_once('util.php');
-
-$metresMaxWalkingDistance = 1500;
-
-$originLat = $_GET['lat'];
-$originLong = $_GET['long'];
-
-if (strlen($originLat) < 1)
-{
-    $originLat = -37.7796654;
-}
-if (strlen($originLong) < 1)
-{
-    $originLong = 144.917969;
-}
-
 global $config;
 
+$originLat = (double) $_GET['lat'];
+$originLong = (double) $_GET['lng'];
 ?>
 <!DOCTYPE html>
 <html>
   <head>
     <meta name="viewport" content="initial-scale=1, user-scalable=no, width=device-width">
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.css">
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="/css/style.css" />
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=<?php echo $config['googleapi'] ?>&sensor=false"></script>
-    <script type="text/javascript" src="js/mapr.js"></script>
+    <script type="text/javascript" src="/js/mapr.js"></script>
     <script type="text/javascript">
         google.maps.event.addDomListener(window, 'load', function() { initialiseMap(<?php echo $originLat; ?>, <?php echo $originLong; ?>, 'tram'); } );
     </script>
@@ -34,7 +20,7 @@ global $config;
   <body>
     <div data-role="page" id="tram" class="map-page" data-theme="b">
         <div data-role="header">
-            <a href="." data-rel="back" data-role="button" data-icon="carat-l">Back</a>
+            <a href="/" data-rel="back" data-role="button" data-icon="carat-l">Back</a>
             <h1>You're on a tram</h1>
         </div>
         
@@ -65,11 +51,11 @@ global $config;
                 </div></div>  
             </div>
             <div data-role="popup" id="popupFinal" data-overlay-theme="a" data-theme="d" data-corners="false">
-				<a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a><h1>Sheesh!</h1>
+                <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a><h1>Sheesh!</h1>
                 <p>Quite the journey to top up your myki, wasn't it?</p>
                 <p>You've just had to had to walk <strong id="ticketDistanceLB"></strong> to a myki retailer, and then <strong id="tramDistanceLB"></strong> back to a tram.</p>
                 <p>All up, that is an extra <strong id="extraDistanceLB"></strong> walk - or <strong id="extraTimeLB"></strong> you had to waste because you can't top up on your myki on a tram.</p>
-                <a href="." data-role="button" data-icon="home">Home</a>
+                <a href="/" data-role="button" data-icon="home" onclick="goHome()">Home</a>
             </div>
         </div>
         
