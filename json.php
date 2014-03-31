@@ -38,10 +38,20 @@ $locationNearestTram = getNearestPOI($poiTrams, $originLat, $originLong, $bounds
 
 if ($locationNearestTram != null)
 {
+    $boundsNearestTram = getOffsetLocationBounds($locationNearestTram->lat, $locationNearestTram->lon, $metresMaxWalkingDistance);
     $contentNearestTram = trim($locationNearestTram->location_name);
 
-    // how far do I need to walk to the ticket machine from home?
-    $locationTicketMachine = getNearestPOI($poiTickets, $originLat, $originLong, $boundsOrigin);
+    switch ($type)
+    {
+        // how far to the ticket machine from the tram?
+        case "tram":
+            $locationTicketMachine = getNearestPOI($poiTickets, $locationNearestTram->lat, $locationNearestTram->lon, $boundsNearestTram);
+            break;
+        // how far do I need to walk to the ticket machine from home?
+        case "home":
+            $locationTicketMachine = getNearestPOI($poiTickets, $originLat, $originLong, $boundsOrigin);
+            break;
+    }
     $contentTicketMachine = "$locationTicketMachine->business_name at " . trim($locationTicketMachine->location_name) . ", $locationTicketMachine->suburb";
 
     // where is the nearest tram stop after the ticket machine?
