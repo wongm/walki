@@ -42,4 +42,8 @@ body { height: 100%; margin: 0; padding: 0 }
     background-color: white;
     color: #333;
     text-shadow: 0 1px 0 #f3f3f3;
+    padding: 5px 15px;
+}
+#popupFinal h1, #popupFinal p {
+    margin: 10px 5px;
 }
