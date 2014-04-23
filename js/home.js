@@ -1,6 +1,12 @@
 function checkPosition(evt) {
-    if(navigator.geolocation) {
+    if(navigator.geolocation) {  
+        $.mobile.loading( 'show', {
+            text: 'Finding your location',
+            textVisible: true,
+            theme: 'b',
+        });    
         navigator.geolocation.getCurrentPosition( 
+        
             function(pos) { showPosition(pos, evt.target.id) }, 
             function() { positionDenied(evt.target.id) } 
         );

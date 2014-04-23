@@ -6,7 +6,11 @@ var originMarker, nearestTramMarker, ticketMachineMarker, tramWithTicketMarker;
 var nearestDistance, ticketDistance, tramDistance, nearestDuration, ticketDuration, tramDuration;
 
 function initialiseMap(lat, lng, type) {     
-    $.mobile.loading('show');
+    $.mobile.loading('show', {
+        text: 'Finding tram stops',
+        textVisible: true,
+        theme: 'a',
+    });
     var url = '/json.php?lat=' + lat + '&lng=' + lng + '&type=' + type;  
     $.ajax(url, {
         success: displayMap,
