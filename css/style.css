@@ -11,9 +11,6 @@ body { height: 100%; margin: 0; padding: 0 }
 .ui-footer .ui-btn-left {
     margin-top: 1px;
 }
-#map-canvas {
-    //background: url('../images/spinner.gif') no-repeat center center;
-}
 .infoWindow h1 { 
     font-size: 20px !important;
 }
