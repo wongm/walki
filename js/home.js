@@ -1,3 +1,6 @@
+var defaultLat = -37.814107;
+var defaultLng = 144.96328;
+
 function checkPosition(evt) {
     if(navigator.geolocation) {  
         $.mobile.loading('show', {
@@ -20,7 +23,11 @@ function showPosition(pos, type) {
     switch (type) {
         case 'home':
         case 'tram':
-            window.location.href = '/' + type + '/' + pos.coords.latitude + ',' + pos.coords.longitude;
+            if (pos.coords.latitude == defaultLat && pos.coords.longitude == defaultLng) {
+                window.location.href = '/' + type + '/find';
+            } else {
+                window.location.href = '/' + type + '/' + pos.coords.latitude + ',' + pos.coords.longitude;
+            }
             return false;
     }
 }

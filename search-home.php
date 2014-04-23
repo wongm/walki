@@ -12,6 +12,7 @@ $originLong = (double) $_GET['lng'];
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.css">
     <link rel="stylesheet" href="/css/style.css" />
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=<?php echo $config['googleapi'] ?>&sensor=false"></script>
+    <script type="text/javascript" src="/js/home.js"></script>
     <script type="text/javascript" src="/js/mapr.js"></script>
     <script type="text/javascript">
         google.maps.event.addDomListener(window, 'load', function() { initialiseMap(<?php echo $originLat; ?>, <?php echo $originLong; ?>, 'home'); } );

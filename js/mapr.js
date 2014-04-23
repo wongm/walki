@@ -12,8 +12,8 @@ function initialiseMap(lat, lng, type) {
         theme: 'a',
     });
     
-    if (lat == 0 && lng == 0) {
-        var stopResults = { searchMode: true, type: type, lat: -37.814107, lng: 144.96328 }; 
+    if ((lat == 0 && lng == 0)) {
+        var stopResults = { searchMode: true, type: type, lat: defaultLat, lng: defaultLng }; 
         displayFailure(stopResults);
         return;
     }
