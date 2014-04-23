@@ -48,7 +48,16 @@ $originLong = (double) $_GET['lng'];
                 <div id="errorContent"><div class="infoWindow">
                     <h1>No trams?</h1>
                     <p>Sorry - there aren't any tram stops near your current location!</p>
-                </div></div>  
+                </div></div>
+                <div id="searchStartContent"><div class="infoWindow">
+                    <h1>Where are you?</h1>
+                    <p>Drag me to your current location, so we can find your nearest tram.</p>
+                </div></div>
+                <div id="searchEndContent"><div class="infoWindow">
+                    <h1>Are you here?</h1>
+                    <p>If not, drag the target to your actual location.</p>
+                    <p><a href="#" data-role="button" onclick="initialiseForMarker()">I'm here</a></p>
+                </div></div>
             </div>
             <div data-role="popup" id="popupFinal" data-overlay-theme="a" data-theme="d" data-corners="false">
                 <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a><h1>Sheesh!</h1>

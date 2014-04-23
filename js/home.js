@@ -1,14 +1,14 @@
 function checkPosition(evt) {
     if(navigator.geolocation) {  
-        $.mobile.loading( 'show', {
+        $.mobile.loading('show', {
             text: 'Finding your location',
             textVisible: true,
             theme: 'b',
-        });    
+        });
+        var timeout = setTimeout(function() { positionDenied(evt.target.id); }, 10000);
         navigator.geolocation.getCurrentPosition( 
-        
-            function(pos) { showPosition(pos, evt.target.id) }, 
-            function() { positionDenied(evt.target.id) } 
+            function(pos) { clearTimeout(timeout); showPosition(pos, evt.target.id) }, 
+            function() { clearTimeout(timeout); positionDenied(evt.target.id) } 
         );
     } else {
         positionDenied(evt.target.id);
@@ -26,7 +26,7 @@ function showPosition(pos, type) {
 }
 
 function positionDenied(type) {
-    window.location.href = '/' + type + '/';
+    window.location.href = '/' + type + '/find';
     return false;
 }
 

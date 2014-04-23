@@ -11,6 +11,12 @@ function initialiseMap(lat, lng, type) {
         textVisible: true,
         theme: 'a',
     });
+    
+    if (lat == 0 && lng == 0) {
+        var stopResults = { searchMode: true, type: type, lat: -37.814107, lng: 144.96328 }; 
+        displayFailure(stopResults);
+        return;
+    }
     var url = '/json.php?lat=' + lat + '&lng=' + lng + '&type=' + type;  
     $.ajax(url, {
         success: displayMap,
@@ -18,17 +24,17 @@ function initialiseMap(lat, lng, type) {
         type: 'GET',
         dataType: 'json',
     });
-}    
+}
 
 function displayFailure(stopResults) {
     $.mobile.loading('hide');
-    console.log('displayFailure');
     
     var originLatlng = new google.maps.LatLng(stopResults.lat, stopResults.lng);
     map = new google.maps.Map(document.getElementById('map-canvas'));
     
     originMarker = new google.maps.Marker({
         position: originLatlng,
+        draggable: stopResults.searchMode,
         map: map,
         icon: 'http://maps.google.com/mapfiles/kml/pal3/icon20.png',
         title: 'You are here'
@@ -41,7 +47,19 @@ function displayFailure(stopResults) {
     map.setCenter(originLatlng);
     map.setZoom(15);
     
-    infoWindow.setContent(document.getElementById('errorContent').innerHTML);
+    if (stopResults.searchMode) {
+        google.maps.event.addListener(originMarker, 'dragstart', function() {
+            infoWindow.close();
+        });
+        google.maps.event.addListener(originMarker, 'dragend', function() {
+            infoWindow.setContent(document.getElementById('searchEndContent').innerHTML);
+            infoWindow.open(map, this);
+        });   
+        infoWindow.setContent(document.getElementById('searchStartContent').innerHTML);
+    } else {
+        infoWindow.setContent(document.getElementById('errorContent').innerHTML);
+    }
+    
     infoWindow.open(map, originMarker);
 }
 
@@ -73,7 +91,6 @@ function displayMap(stopResults) {
             originIcon = 'http://maps.google.com/mapfiles/kml/pal3/icon56.png';
             break;
         case 'tram':
-        console.log(stopResults.current.lat + ',' + stopResults.current.lng);
             originIcon = 'http://maps.google.com/mapfiles/kml/pal3/icon20.png';
             break;
     }
@@ -214,16 +231,14 @@ function displayMap(stopResults) {
     map.fitBounds(bounds);
 }
 
-function formatDistance(distance)
-{
+function formatDistance(distance) {
     if (distance.value < 1000) {
         return distance.value + ' metres';
     }
     return distance.text;
 }
 
-function setupFinalLightboxContent()
-{
+function setupFinalLightboxContent() {
     // check for everything being loaded from async methods
     if (nearestDistance !== undefined && ticketDistance !== undefined)
     {
@@ -247,14 +262,17 @@ function setupFinalLightboxContent()
     }
 }
 
-function closeFinalLightbox()
-{
+function closeFinalLightbox() {
     infoWindow.close();
 }
 
-function goHome()
-{
+function goHome() {
     window.location.href = '/';
+    return false;
+}
+
+function initialiseForMarker() {
+    window.location.href = window.location.href.replace('/find', '/' + originMarker.position.lat() + ',' + originMarker.position.lng());
     return false;
 }
 
@@ -263,7 +281,7 @@ function renderDirections(result) {
         map: map, 
         preserveViewport: true,
         suppressMarkers : true 
-    } 
+    }
     var directionsRenderer = new google.maps.DirectionsRenderer(rendererOptions);
     directionsRenderer.setDirections(result);
 }
