@@ -69,7 +69,7 @@ $originLong = (double) $_GET['lng'];
         </div>
         
         <div data-role="footer" data-position="fixed">
-            <h4>Test All The Things</h4>
+            <h4>How far is myki making you walk?</h4>
         </div>
     </div>
     
