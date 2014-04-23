@@ -27,13 +27,11 @@ switch ($type)
         die();
 }
 
-// get the bounds
-$boundsOrigin = getOffsetLocationBounds($originLat, $originLong, $metresMaxWalkingDistance);
-
 $poiTickets = 100;
 $poiTrams = 1;
 
 // nearest tram
+$boundsOrigin = getOffsetLocationBounds($originLat, $originLong, $metresMaxWalkingDistance);
 $locationNearestTram = getNearestPOI($poiTrams, $originLat, $originLong, $boundsOrigin);
 
 if ($locationNearestTram != null)
