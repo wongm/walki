@@ -20,12 +20,13 @@ body { height: 100%; margin: 0; padding: 0 }
 .infoWindow { 
     min-height: 100px; 
     max-width: 400px;
+    min-width: 300px;
     text-align: center;
-	color: #333;
+    color: #333;
     text-shadow: 0 1px 0 #f3f3f3;
 }
 .infoWindow p, .infoWindow span { 
-	font-size: 15px !important;
+    font-size: 15px !important;
 }
 .infoWindow div {
     width: 100%;
@@ -39,6 +40,6 @@ body { height: 100%; margin: 0; padding: 0 }
 }
 #popupFinal {
     background-color: white;
-	color: #333;
+    color: #333;
     text-shadow: 0 1px 0 #f3f3f3;
 }

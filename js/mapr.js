@@ -185,7 +185,7 @@ function displayMap(stopResults) {
             
             google.maps.event.addListener(ticketMachineMarker, 'click', function() {
                 infoWindow.setContent(document.getElementById('ticketMachineContent').innerHTML);
-                   infoWindow.open(map, this);
+                infoWindow.open(map, this);
             });
             
             tramWithTicketMarker = new google.maps.Marker({
@@ -204,7 +204,7 @@ function displayMap(stopResults) {
             
             google.maps.event.addListener(tramWithTicketMarker, 'click', function() {
                 infoWindow.setContent(document.getElementById('tramWithTicketContent').innerHTML);
-                   infoWindow.open(map, this);
+                infoWindow.open(map, this);
             });
             
             setupFinalLightboxContent();
