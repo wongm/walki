@@ -1,6 +1,6 @@
 <?php
 
-include_once("util.php");
+include_once("common/util.php");
 
 $metresMaxWalkingDistance = 1500;
 

@@ -1,5 +1,5 @@
 <?php
-include_once('util.php');
+include_once('common/util.php');
 global $config;
 
 $originLat = (double) $_GET['lat'];

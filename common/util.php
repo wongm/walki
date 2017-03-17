@@ -1,5 +1,5 @@
 <?php
-require_once('config.php');
+require_once('common/config.php');
 
 if (!function_exists('json_decode')) {
     require_once('upgradephp/upgrade.php');
@@ -29,12 +29,12 @@ function generateURLWithDevIDAndKey($url)
     $signature = strtoupper(hash_hmac("sha1", $url, $config['key'], false));
     
     // mash it all together
-    return "http://timetableapi.ptv.vic.gov.au" . $url . "&signature=" . $signature;
+    return "https://timetableapi.ptv.vic.gov.au" . $url . "&signature=" . $signature;
 }
 
 function getOffsetLocationBounds($lat, $long, $difference)
 {
-    // http://gis.stackexchange.com/questions/2951/algorithm-for-offsetting-a-latitude-longitude-by-some-amount-of-meters
+    // https://gis.stackexchange.com/questions/2951/algorithm-for-offsetting-a-latitude-longitude-by-some-amount-of-meters
     
     //Earth's radius, sphere
     $radius = 6378137;
