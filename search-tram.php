@@ -48,7 +48,7 @@ $originLong = (double) $_GET['lng'];
                 </div></div>
                 <div id="errorContent"><div class="infoWindow">
                     <h1>No trams?</h1>
-                    <p>Sorry - there aren't any tram stops near your current location!</p>
+                    <p>Sorry - there aren't any tram stops near your current location! Drag me somewhere else, so we can find a tram.</p>
                 </div></div>
                 <div id="searchStartContent"><div class="infoWindow">
                     <h1>Where are you?</h1>

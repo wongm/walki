@@ -34,7 +34,7 @@ function displayFailure(stopResults) {
     
     originMarker = new google.maps.Marker({
         position: originLatlng,
-        draggable: stopResults.searchMode,
+        draggable: true,
         map: map,
         icon: 'https://maps.google.com/mapfiles/kml/pal3/icon20.png',
         title: 'You are here'
@@ -48,17 +48,18 @@ function displayFailure(stopResults) {
     map.setZoom(15);
     
     if (stopResults.searchMode) {
-        google.maps.event.addListener(originMarker, 'dragstart', function() {
-            infoWindow.close();
-        });
-        google.maps.event.addListener(originMarker, 'dragend', function() {
-            infoWindow.setContent(document.getElementById('searchEndContent').innerHTML);
-            infoWindow.open(map, this);
-        });   
         infoWindow.setContent(document.getElementById('searchStartContent').innerHTML);
     } else {
         infoWindow.setContent(document.getElementById('errorContent').innerHTML);
     }
+    
+    google.maps.event.addListener(originMarker, 'dragstart', function() {
+        infoWindow.close();
+    });
+    google.maps.event.addListener(originMarker, 'dragend', function() {
+        infoWindow.setContent(document.getElementById('searchEndContent').innerHTML);
+        infoWindow.open(map, this);
+    });   
     
     infoWindow.open(map, originMarker);
 }
@@ -267,7 +268,8 @@ function closeFinalLightbox() {
 }
 
 function initialiseForMarker() {
-    window.location.href = window.location.href.replace('/find', '/' + originMarker.position.lat() + ',' + originMarker.position.lng());
+    var lastSlash = window.location.href.split("/")[window.location.href.split("/").length-1]
+    window.location.href = window.location.href.replace(lastSlash, originMarker.position.lat() + ',' + originMarker.position.lng());
     return false;
 }
 
