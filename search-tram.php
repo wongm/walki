@@ -17,6 +17,7 @@ $originLong = (double) $_GET['lng'];
     <script type="text/javascript">
         google.maps.event.addDomListener(window, 'load', function() { initialiseMap(<?php echo $originLat; ?>, <?php echo $originLong; ?>, 'tram'); } );
     </script>
+    <link rel="shortcut icon" type="image/png" href="../favicon.png" />
   </head>
   <body>
     <div data-role="page" id="tram" class="map-page" data-theme="b">
