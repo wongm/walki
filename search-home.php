@@ -9,11 +9,11 @@ $originLong = (double) $_GET['lng'];
 <html>
   <head>
     <meta name="viewport" content="initial-scale=1, user-scalable=no, width=device-width">
-    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.css">
-    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.css">
+    <link rel="stylesheet" href="../css/style.css" />
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=<?php echo $config['googleapi'] ?>&sensor=false"></script>
-    <script type="text/javascript" src="/js/home.js"></script>
-    <script type="text/javascript" src="/js/mapr.js"></script>
+    <script type="text/javascript" src="../js/home.js"></script>
+    <script type="text/javascript" src="../js/mapr.js"></script>
     <script type="text/javascript">
         google.maps.event.addDomListener(window, 'load', function() { initialiseMap(<?php echo $originLat; ?>, <?php echo $originLong; ?>, 'home'); } );
     </script>
@@ -21,7 +21,7 @@ $originLong = (double) $_GET['lng'];
   <body>
     <div data-role="page" id="home" class="map-page" data-theme="b">
         <div data-role="header">
-            <a href="/" data-rel="back" data-role="button" data-icon="carat-l">Back</a>
+            <a href="../" data-rel="back" data-role="button" data-icon="carat-l">Back</a>
             <h1>You're at home</h1>
         </div>
         
@@ -80,7 +80,7 @@ $originLong = (double) $_GET['lng'];
         </div>
     </div>
         
-    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
   </body>
 </html>

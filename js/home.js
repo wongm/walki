@@ -24,16 +24,16 @@ function showPosition(pos, type) {
         case 'home':
         case 'tram':
             if (pos.coords.latitude == defaultLat && pos.coords.longitude == defaultLng) {
-                window.location.href = '/' + type + '/find';
+                window.location.href = type + '/find';
             } else {
-                window.location.href = '/' + type + '/' + pos.coords.latitude + ',' + pos.coords.longitude;
+                window.location.href = type + '/' + pos.coords.latitude + ',' + pos.coords.longitude;
             }
             return false;
     }
 }
 
 function positionDenied(type) {
-    window.location.href = '/' + type + '/find';
+    window.location.href = type + '/find';
     return false;
 }
 

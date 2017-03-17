@@ -17,7 +17,7 @@ function initialiseMap(lat, lng, type) {
         displayFailure(stopResults);
         return;
     }
-    var url = '/json.php?lat=' + lat + '&lng=' + lng + '&type=' + type;  
+    var url = '../json.php?lat=' + lat + '&lng=' + lng + '&type=' + type;  
     $.ajax(url, {
         success: displayMap,
         failure: displayFailure,
@@ -36,7 +36,7 @@ function displayFailure(stopResults) {
         position: originLatlng,
         draggable: stopResults.searchMode,
         map: map,
-        icon: 'http://maps.google.com/mapfiles/kml/pal3/icon20.png',
+        icon: 'https://maps.google.com/mapfiles/kml/pal3/icon20.png',
         title: 'You are here'
     });
     
@@ -88,10 +88,10 @@ function displayMap(stopResults) {
     {
         case 'home':
             nearestTramLatlng = new google.maps.LatLng(stopResults.nearestTram.lat, stopResults.nearestTram.lng);
-            originIcon = 'http://maps.google.com/mapfiles/kml/pal3/icon56.png';
+            originIcon = 'https://maps.google.com/mapfiles/kml/pal3/icon56.png';
             break;
         case 'tram':
-            originIcon = 'http://maps.google.com/mapfiles/kml/pal3/icon20.png';
+            originIcon = 'https://maps.google.com/mapfiles/kml/pal3/icon20.png';
             break;
     }
     
@@ -118,7 +118,7 @@ function displayMap(stopResults) {
                 nearestTramMarker = new google.maps.Marker({
                     position: new google.maps.LatLng(directionResult.routes[0].legs[0].end_location.k, directionResult.routes[0].legs[0].end_location.A),
                     map: map,
-                    icon: 'http://maps.google.com/mapfiles/ms/micons/green.png',
+                    icon: 'https://maps.google.com/mapfiles/ms/micons/green.png',
                     title: 'Nearest tram stop'
                 });
                 
@@ -189,7 +189,7 @@ function displayMap(stopResults) {
             ticketMachineMarker = new google.maps.Marker({
                 position: new google.maps.LatLng(directionResult.routes[0].legs[0].end_location.k, directionResult.routes[0].legs[0].end_location.A),
                 map: map,
-                icon: 'http://maps.google.com/mapfiles/ms/micons/orange.png',
+                icon: 'https://maps.google.com/mapfiles/ms/micons/orange.png',
                 title: 'Nearest myki machine'
             });
             
@@ -208,7 +208,7 @@ function displayMap(stopResults) {
             tramWithTicketMarker = new google.maps.Marker({
                 position: new google.maps.LatLng(directionResult.routes[0].legs[1].end_location.k, directionResult.routes[0].legs[1].end_location.A),
                 map: map,
-                icon: 'http://maps.google.com/mapfiles/ms/micons/red.png',
+                icon: 'https://maps.google.com/mapfiles/ms/micons/red.png',
                 title: 'Nearest tram stop'
             });
             
