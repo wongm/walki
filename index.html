@@ -18,8 +18,8 @@
                 <p>You can't buy a ticket on a tram, or top you your myki. So where can you?</p>
                 
                 <ul data-role="listview" data-inset="true" data-theme="a">
-                    <li><a href="#" id="home" data-icon="carat-r" data-iconpos="right">I'm at home</a></li>
-                    <li><a href="#" id="tram" data-icon="carat-r" data-iconpos="right">I'm on a tram</a></li>
+                    <li><a href="#" id="home" data-icon="carat-r" data-iconpos="right" class="walki">I'm at home</a></li>
+                    <li><a href="#" id="tram" data-icon="carat-r" data-iconpos="right" class="walki">I'm on a tram</a></li>
                 </ul>
                 <ul data-role="listview" data-inset="true" data-theme="a">
                     <li><a href="#examples" data-transition="fade" data-icon="carat-r" data-iconpos="right">Some examples</a></li>
@@ -111,8 +111,7 @@
         <script src="https://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
         <script>
             $( document ).ready(function() {
-                $('#home').bind('click', checkPosition);
-                $('#tram').bind('click', checkPosition);
+                $('.walki').bind('click', checkPosition);
                 $('#examplelinks').find('a').bind('click', hardLoadLink);
             });
         </script>
