@@ -266,11 +266,6 @@ function closeFinalLightbox() {
     infoWindow.close();
 }
 
-function goHome() {
-    window.location.href = '/';
-    return false;
-}
-
 function initialiseForMarker() {
     window.location.href = window.location.href.replace('/find', '/' + originMarker.position.lat() + ',' + originMarker.position.lng());
     return false;

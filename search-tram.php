@@ -65,7 +65,7 @@ $originLong = (double) $_GET['lng'];
                 <p>Quite the journey to top up your myki, wasn't it?</p>
                 <p>You've just had to had to walk <strong id="ticketDistanceLB"></strong> to a myki retailer, and then <strong id="tramDistanceLB"></strong> back to a tram.</p>
                 <p>All up, that is an extra <strong id="extraDistanceLB"></strong> walk - or <strong id="extraTimeLB"></strong> you had to waste because you can't top up on your myki on a tram.</p>
-                <a href="/" data-role="button" data-icon="home" onclick="goHome()">Home</a>
+                <a href="../" data-role="button" data-icon="home" data-ajax="false">Home</a>
             </div>
         </div>
         

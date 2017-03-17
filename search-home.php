@@ -71,7 +71,7 @@ $originLong = (double) $_GET['lng'];
                 <p>If you could buy a ticket on the tram, it would have taken you only <strong id="nearestDurationLB"></strong> to walk the <strong id="nearestDistanceLB"></strong> to your nearest stop and board a tram.</p>
                 <p>Instead, you had to walk <strong id="ticketDistanceLB"></strong> to a myki retailer, and then <strong id="tramDistanceLB"></strong> back to the tram stop.</p>
                 <p>All up, that is an extra <strong id="extraDistanceLB"></strong> walk - or <strong id="extraTimeLB"></strong> you had to waste because of a lack of onboard ticket sales.</p>
-                <a href="/" data-role="button" data-icon="home" onclick="goHome()">Home</a>
+                <a href="../" data-role="button" data-icon="home" data-ajax="false">Home</a>
             </div>
         </div>
         
