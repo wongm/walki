@@ -161,7 +161,7 @@ function displayMap(stopResults) {
             renderDirections(directionResult);
             
             originMarker = new google.maps.Marker({
-                position: new google.maps.LatLng(directionResult.routes[0].legs[0].start_location.k, directionResult.routes[0].legs[0].start_location.A),
+                position: new google.maps.LatLng(directionResult.routes[0].legs[0].start_location.lat(), directionResult.routes[0].legs[0].start_location.lng()),
                 map: map,
                 icon: originIcon,
                 title: 'You are here'
@@ -187,7 +187,7 @@ function displayMap(stopResults) {
             infoWindow.open(map, originMarker);
             
             ticketMachineMarker = new google.maps.Marker({
-                position: new google.maps.LatLng(directionResult.routes[0].legs[0].end_location.k, directionResult.routes[0].legs[0].end_location.A),
+                position: new google.maps.LatLng(directionResult.routes[0].legs[0].end_location.lat(), directionResult.routes[0].legs[0].end_location.lng()),
                 map: map,
                 icon: 'https://maps.google.com/mapfiles/ms/micons/orange.png',
                 title: 'Nearest myki machine'
@@ -206,7 +206,7 @@ function displayMap(stopResults) {
             });
             
             tramWithTicketMarker = new google.maps.Marker({
-                position: new google.maps.LatLng(directionResult.routes[0].legs[1].end_location.k, directionResult.routes[0].legs[1].end_location.A),
+                position: new google.maps.LatLng(directionResult.routes[0].legs[1].end_location.lat(), directionResult.routes[0].legs[1].end_location.lng()),
                 map: map,
                 icon: 'https://maps.google.com/mapfiles/ms/micons/red.png',
                 title: 'Nearest tram stop'
