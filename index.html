@@ -14,8 +14,10 @@
             </div>
  
             <div data-role="content">
-                <p>How far is myki making you walk?</p>
-                <p>You can't buy a ticket on a tram, or top you your myki. So where can you?</p>
+                <div style="text-align: center">
+					<p>You can't buy a ticket on a tram, or top up your myki. So where <em>can</em> you buy one?</p>
+					<img src="https://railgallery.wongm.com/cache/myki/E117_8648_595.jpg" style="max-width: 100%" alt="No ticket sales on trams from 29th December (2012 that is!)" />
+				</div>
                 
                 <ul data-role="listview" data-inset="true" data-theme="a">
                     <li><a href="#" id="home" data-icon="carat-r" data-iconpos="right" class="walki">I'm at home</a></li>
@@ -69,13 +71,13 @@
             <div data-role="content">
                 <p>An integral part of the original Myki system was ticket machines onboard trams - they would have allowed passengers to top up their myki, or to purchase a 'Short Term Ticket' if they didn't hold a myki.</p>
                 <p>A single ticket machine was installed onboard a Melbourne tram in early 2009 as part of the myki field trial program, with it remaining in place but not in use until at least November 2011.</p>
-                <p><img src="https://railgallery.wongm.com/cache/myki/E111_9863_595.jpg" title="Myki ticket machine onboard tram B2.2012, install as part of the field trial program." /></p>
+                <p><img src="https://railgallery.wongm.com/albums/myki/E111_9863.jpg" title="Myki ticket machine onboard tram B2.2012, install as part of the field trial program." /></p>
                 <p>Short Term Tickets were a cardboard smartcard which entitled the holder to 2 hour of travel, for a cost slightly more than the normal fare charged to standard myki users.</p>
                 <p>Sales of these tickets commenced in 2009 when Myki went live in Geelong, and they continue to be sold onboard buses in Geelong, Ballarat, Bendigo, Seymour and the Latrobe Valley until 2013.</p>
                 <p>In Melbourne the sale of Short Term Tickets was never enabled, with the option to do so being disabled for all myki machines located in the city.</p>
                 <p>The rollout of short term fares and myki machines onboard trams was cancelled by the Baillieu Government in June 2011, acting on advice contained in a secret report by consultanting firm Deloitte.<p>
                 <p>One reason given for the reason for the withdrawl of Short Term Ticket was due to the cards costing $0.40 cents each to manufacture – making up almost half of the $0.90 charged for a concession bus fare in Geelong!</p>
-                <p>Yarra Trams said that the change would reduce the tram company's costs, boost space for passengers and reduce fare evasion issues by eliminating a key reason given for not buying a ticket.</p>
+                <p>In 2011 <a href="http://www.theage.com.au/victoria/myki-vending-machines-scrapped-from-trams-20110621-1gdkz.html">Yarra Trams said</a> that the change would reduce the tram company's costs, boost space for passengers and reduce fare evasion issues by eliminating a key reason given for not buying a ticket.</p>
                 <p>Everyone else says the cancellation of Short Term Tickets and onboard top ups make it much more difficult for passengers who only use trams to pay their fare.</p>
                 
             </div>
@@ -97,6 +99,7 @@
                 <p>With the mobile landscape already littered with hundreds of different trip planning apps, I decided to build something slightly different, with this being the end result.</p>
                 <p>In the backend I'm using PHP to gather tram stop and myki retailer locations through calls to the PTV API, with the resulting data being mashed around in Javascript until they are drawn out on a pretty map.</p>
                 <p>The frontend code is all jQuery Mobile, with the maps being drawn using the Google Maps JavaScript API v3.</p>
+                <p>You can <a href="https://wongm.com/2017/03/how-far-is-myki-making-you-walk/">read the full backstory on my blog</a>, and find the  <a href="https://github.com/wongm/walki">source code on GitHub</a>.</p>
                 <p>Marcus Wong (<a href="https://wongm.com">https://wongm.com</a>)</p>
             </div>
  
