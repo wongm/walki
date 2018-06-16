@@ -6,9 +6,9 @@ if (!function_exists('json_decode')) {
 }
 
 $date = gmdate('Y-m-d\TH:i:s\Z');
-$healthcheckurl = "/v2/healthcheck?timestamp=" . $date;
-$nearmeurl = "/v2/nearme/latitude/-37.82392124423254/longitude/144.9462017431463";
-$stopsurl = "/v2/mode/2/line/787/stops-for-line";
+$healthcheckurl = "/v3/healthcheck?timestamp=" . $date;
+$nearmeurl = "/v3/nearme/latitude/-37.82392124423254/longitude/144.9462017431463";
+$stopsurl = "/v3/mode/2/line/787/stops-for-line";
 
 function generateURLWithDevIDAndKey($url)
 {
