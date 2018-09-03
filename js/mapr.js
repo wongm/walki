@@ -1,11 +1,11 @@
 var map;
 var infoWindow = new google.maps.InfoWindow();
 
-var originContent, nearestTramContent, ticketMachineContent, tramWithTicketContent;    
+var originContent, nearestTramContent, ticketMachineContent, tramWithTicketContent;
 var originMarker, nearestTramMarker, ticketMachineMarker, tramWithTicketMarker;
 var nearestDistance, ticketDistance, tramDistance, nearestDuration, ticketDuration, tramDuration;
 
-function initialiseMap(lat, lng, type) {     
+function initialiseMap(lat, lng, type) {
     $.mobile.loading('show', {
         text: 'Finding tram stops',
         textVisible: true,
@@ -17,7 +17,7 @@ function initialiseMap(lat, lng, type) {
         displayFailure(stopResults);
         return;
     }
-    var url = '../json.php?lat=' + lat + '&lng=' + lng + '&type=' + type;  
+    var url = '../json.php?lat=' + lat + '&lng=' + lng + '&type=' + type;
     $.ajax(url, {
         success: displayMap,
         failure: displayFailure,

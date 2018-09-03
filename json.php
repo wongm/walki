@@ -3,6 +3,7 @@
 include_once("common/util.php");
 
 $metresMaxWalkingDistance = 1500;
+$metresMaxTicketMachineDistance = 2500;
 
 $originLat = (double) $_GET["lat"];
 $originLong = (double) $_GET["lng"];
@@ -27,43 +28,40 @@ switch ($type)
         die();
 }
 
-$poiTickets = 100;
-$poiTrams = 1;
+$poiTickets = 'outlets';
+$poiTrams = 'stops';
 
 // nearest tram
-$boundsOrigin = getOffsetLocationBounds($originLat, $originLong, $metresMaxWalkingDistance);
-$locationNearestTram = getNearestPOI($poiTrams, $originLat, $originLong, $boundsOrigin);
+$locationNearestTram = getNearestPOI($poiTrams, $originLat, $originLong, $metresMaxWalkingDistance, 'route_types=1');
 
 if ($locationNearestTram != null)
 {
-    $boundsNearestTram = getOffsetLocationBounds($locationNearestTram->lat, $locationNearestTram->lon, $metresMaxWalkingDistance);
-    $contentNearestTram = trim($locationNearestTram->location_name);
+    $contentNearestTram = trim($locationNearestTram->stop_name);
 
     switch ($type)
     {
         // how far to the ticket machine from the tram?
         case "tram":
-            $locationTicketMachine = getNearestPOI($poiTickets, $locationNearestTram->lat, $locationNearestTram->lon, $boundsNearestTram);
+            $locationTicketMachine = getNearestPOI($poiTickets, $locationNearestTram->stop_latitude, $locationNearestTram->stop_longitude, $metresMaxWalkingDistance);
             break;
         // how far do I need to walk to the ticket machine from home?
         case "home":
-            $locationTicketMachine = getNearestPOI($poiTickets, $originLat, $originLong, $boundsOrigin);
+            $locationTicketMachine = getNearestPOI($poiTickets, $originLat, $originLong, $metresMaxWalkingDistance);
             break;
     }
-    $contentTicketMachine = "$locationTicketMachine->business_name at " . trim($locationTicketMachine->location_name) . ", $locationTicketMachine->suburb";
+    $contentTicketMachine = "$locationTicketMachine->outlet_business at " . trim($locationTicketMachine->outlet_name) . ", $locationTicketMachine->outlet_suburb";
 
     // where is the nearest tram stop after the ticket machine?
-    $boundsTicketMachine = getOffsetLocationBounds($locationTicketMachine->lat, $locationTicketMachine->lon, $metresMaxWalkingDistance + 1000);
-    $locationTramWithTicket = getNearestPOI($poiTrams, $locationTicketMachine->lat, $locationTicketMachine->lon, $boundsTicketMachine);
-    $contentTramWithTicket = trim($locationTramWithTicket->location_name);
+    $locationTramWithTicket = getNearestPOI($poiTrams, $locationTicketMachine->outlet_latitude, $locationTicketMachine->outlet_longitude, $metresMaxTicketMachineDistance, 'route_types=1');
+    $contentTramWithTicket = trim($locationTramWithTicket->stop_name);
     
     switch ($type)
     {
         case "tram":
             $current = array(
                 "name" => $contentNearestTram,
-                "lat" => $locationNearestTram->lat,
-                "lng" => $locationNearestTram->lon,
+                "lat" => $locationNearestTram->stop_latitude,
+                "lng" => $locationNearestTram->stop_longitude,
             );
             $nearestTram = null;
             break;
@@ -75,8 +73,8 @@ if ($locationNearestTram != null)
             );
             $nearestTram = array(
                 "name" => $contentNearestTram,
-                "lat" => $locationNearestTram->lat,
-                "lng" => $locationNearestTram->lon,
+                "lat" => $locationNearestTram->stop_latitude,
+                "lng" => $locationNearestTram->stop_longitude,
             );
             break;
     }
@@ -87,13 +85,13 @@ if ($locationNearestTram != null)
         "nearestTram" => $nearestTram,
         "ticketMachine" => array(
             "name" => $contentTicketMachine,
-            "lat" => $locationTicketMachine->lat,
-            "lng" => $locationTicketMachine->lon,
+            "lat" => $locationTicketMachine->outlet_latitude,
+            "lng" => $locationTicketMachine->outlet_longitude,
             ),
         "tramWithTicket" => array(
             "name" => $contentTramWithTicket,
-            "lat" => $locationTramWithTicket->lat,
-            "lng" => $locationTramWithTicket->lon,
+            "lat" => $locationTramWithTicket->stop_latitude,
+            "lng" => $locationTramWithTicket->stop_longitude,
             )
     );
 }

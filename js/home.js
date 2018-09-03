@@ -2,7 +2,7 @@ var defaultLat = -37.814107;
 var defaultLng = 144.96328;
 
 function checkPosition(evt) {
-    if(navigator.geolocation) {  
+    if(navigator.geolocation) {
         $.mobile.loading('show', {
             text: 'Finding your location',
             textVisible: true,

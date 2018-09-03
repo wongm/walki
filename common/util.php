@@ -32,57 +32,9 @@ function generateURLWithDevIDAndKey($url)
     return "https://timetableapi.ptv.vic.gov.au" . $url . "&signature=" . $signature;
 }
 
-function getOffsetLocationBounds($lat, $long, $difference)
+function getNearestPOI($poiType, $originLat, $originLong, $metresMaxWalkingDistance, $type)
 {
-    // https://gis.stackexchange.com/questions/2951/algorithm-for-offsetting-a-latitude-longitude-by-some-amount-of-meters
-    
-    //Earth's radius, sphere
-    $radius = 6378137;
-    
-    //Coordinate offsets in radians
-    $dLat = $difference / $radius;
-    $dLong = -$difference / ($radius * Cos(Pi() * ($lat / 180)));
-    
-    //OffsetPosition, decimal degrees
-    $bounds->lat1 = $lat + $dLat * 180 / Pi();
-    $bounds->long1 = $long + $dLong * 180 / Pi();
-    
-    //Coordinate offsets in radians
-    $dLat = -$difference / $radius;
-    $dLong = $difference / ($radius * Cos(Pi() * ($lat / 180)));
-    
-    //OffsetPosition, decimal degrees
-    $bounds->lat2 = $lat + $dLat * 180 / Pi();
-    $bounds->long2 = $long + $dLong * 180 / Pi();
-    
-    return $bounds;
-}
-
-function calculateDistance($lat1, $long1, $lat2, $long2, $unit) {
-
-  $theta = $long1 - $long2;
-  $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
-  $dist = acos($dist);
-  $dist = rad2deg($dist);
-  $miles = $dist * 60 * 1.1515;
-  $unit = strtoupper($unit);
-
-  if ($unit == "K") {
-    return ($miles * 1.609344);
-  } else if ($unit == "N") {
-      return ($miles * 0.8684);
-    } else {
-        return $miles;
-      }
-}
-
-function getNearestPOI($poiType, $originLat, $originLong, $bounds)
-{
-    $griddepth = 3;
-    $limit = 100;
-    
-    $baseURL = "/v2/poi/$poiType/lat1/$bounds->lat1/long1/$bounds->long1/lat2/$bounds->lat2/long2/$bounds->long2/griddepth/$griddepth/limit/$limit";
-    
+    $baseURL = "/v3/$poiType/location/$originLat,$originLong?max_distance=$metresMaxWalkingDistance&$type";
     $signedUrl = generateURLWithDevIDAndKey($baseURL);
     $apiContent = makeHttpRequest($signedUrl);
     
@@ -92,14 +44,14 @@ function getNearestPOI($poiType, $originLat, $originLong, $bounds)
     $nearestLocation = null;
     
     // no locations, we're in trouble!
-    if ($json->locations == null)
+    if ($json->stops == null && $json->outlets == null)
     {
         return;
     }
     
-    foreach($json->locations as $location)
+    foreach($json->stops as $location)
     {
-        $thisDistance = calculateDistance($originLat, $originLong, $location->lat, $location->lon, 'k');
+        $thisDistance = $location->stop_distance;
         
         if ($thisDistance < $shortestDistance)
         {
@@ -108,7 +60,18 @@ function getNearestPOI($poiType, $originLat, $originLong, $bounds)
         }
     }
     
-    $nearestLocation->distance = round($shortestDistance * 1000, 0);
+    foreach($json->outlets as $location)
+    {
+        $thisDistance = $location->outlet_distance;
+        
+        if ($thisDistance < $shortestDistance)
+        {
+            $shortestDistance = $thisDistance;
+            $nearestLocation = $location;
+        }
+    }
+
+    $nearestLocation->distance = round($shortestDistance, 0);
 
     return $nearestLocation;
 }
@@ -117,16 +80,16 @@ function makeHttpRequest($url)
 {
     # Connect to the Web API using cURL.
     $ch = curl_init();
-    
+
     curl_setopt($ch, CURLOPT_URL, $url); 
     curl_setopt($ch, CURLOPT_TIMEOUT, '3'); 
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    
+
     $xmlstr = curl_exec($ch); 
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    
+
     curl_close($ch);
-    
+
     return $xmlstr;
 }
 
